@@ -30,13 +30,7 @@ def new() -> bytes:
 @main.route('/add', methods=['POST'])
 @login_required
 def add() -> bytes:
-    title = request.form['title']
-    content = request.form['content']
-    u = current_user()
-    form = dict(
-        title=title,
-        content=content,
-        user_id=u.id
-    )
-    Blog.new(form)
+    user = current_user()
+    form = request.form
+    Blog.add(form, user)
     return redirect(url_for('blog.index'))
