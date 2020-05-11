@@ -24,7 +24,7 @@ class BaseModel:
         return m
 
     @classmethod
-    def update(cls, _id, **kwargs):
+    def update(cls, _id: int, **kwargs):
         m = cls.query.filter_by(id=_id).first()
         for name, value in kwargs.items():
             setattr(m, name, value)
@@ -39,7 +39,3 @@ class BaseModel:
     def one(cls, **kwargs):
         ms = cls.query.filter_by(**kwargs).first()
         return ms
-
-    @classmethod
-    def columns(cls):
-        return cls.__mapper__.c.items()

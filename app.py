@@ -1,24 +1,28 @@
 from flask import Flask
+from datetime import timedelta
 from secret import mysql_password, secret_key
-from config import db_name
 from models import db
-from models.user import User
-from models.blog import Blog
-from routes.routes_index import main as index_route
+from routes.routes_blog import main as blog_route
+from routes.routes_user import main as user_route
+import config
 
 
 def register_routes(app):
-    app.register_blueprint(index_route)
+    app.register_blueprint(blog_route)
+    app.register_blueprint(user_route)
 
 
 def configured_app():
     app = Flask(__name__)
     app.secret_key = secret_key
-    uri = 'mysql+pymysql://root:{}@localhost/{}?charset=utf8mb4'.format(
+    uri = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
+        config.db_user,
         mysql_password,
-        db_name,
+        config.db_host,
+        config.db_name,
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     db.init_app(app)
     register_routes(app)
     return app

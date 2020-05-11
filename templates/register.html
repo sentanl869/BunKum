@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <form action="{{ url_for('user.register') }}" method="post">
+        <input name="username" type="text" placeholder="请输入用户名">
+        <input name="password" type="text" placeholder="请输入密码">
+        <button type="submit" value="注册">注册</button>
+    </form>
+</body>
+</html>
