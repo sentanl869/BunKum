@@ -3,6 +3,7 @@ from secret import mysql_password, secret_key
 from config import db_name
 from models import db
 from models.user import User
+from models.blog import Blog
 from routes.routes_index import main as index_route
 
 
