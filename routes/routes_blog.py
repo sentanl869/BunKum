@@ -34,3 +34,10 @@ def add() -> bytes:
     form = request.form
     Blog.add(form, user)
     return redirect(url_for('blog.index'))
+
+
+@main.route('/detail')
+def detail() -> bytes:
+    blog_id = request.args['id']
+    blog = Blog.one(id=blog_id)
+    return render_template('blog_detail.html', blog=blog)

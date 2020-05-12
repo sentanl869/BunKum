@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ blog.title }}</title>
+</head>
+<body>
+    <div>{{ blog.title }}</div>
+    <div>作者：{{ blog.author() }}</div>
+    <div id="id-blog-content" class="markdown-body">{{ blog.content }}</div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/prism.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script>
+        let BlogDiv = document.querySelector('#id-blog-content')
+        let MarkedContent = marked(BlogDiv.textContent)
+        document.querySelector('#id-blog-content').innerHTML = MarkedContent
+        Prime.plugins.autoloader.language_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/'
+    </script>
+</body>
+</html>

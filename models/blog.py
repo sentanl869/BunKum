@@ -1,4 +1,5 @@
 from models import BaseModel, db
+from models.user import User
 from sqlalchemy import Column, Integer, Unicode, UnicodeText
 
 
@@ -18,3 +19,7 @@ class Blog(BaseModel, db.Model):
             user_id=u.id
         )
         Blog.new(form)
+
+    def author(self):
+        u = User.one(id=self.user_id)
+        return u.username
