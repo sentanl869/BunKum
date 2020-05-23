@@ -16,7 +16,7 @@ class User(BaseModel, db.Model):
         return hashed
 
     @staticmethod
-    def username_check(username: str) -> tuple:
+    def register_check(username: str = username, password: str = password) -> tuple:
         user = User.one(username=username)
         if user is not None:
             error_code = '1'
@@ -25,8 +25,12 @@ class User(BaseModel, db.Model):
         if status != -1:
             error_code = '2'
             return False, error_code
-        length = len(username)
-        if length < 2:
+        username_length = len(username)
+        if username_length < 2:
+            error_code = '3'
+            return False, error_code
+        password_length = len(password)
+        if password_length < 2:
             error_code = '3'
             return False, error_code
         return True, ''
@@ -46,7 +50,7 @@ class User(BaseModel, db.Model):
     def register(cls, form: dict) -> tuple:
         username: str = form['username']
         password: str = form['password']
-        check_passed, error_code = cls.username_check(username)
+        check_passed, error_code = cls.register_check(username=username, password=password)
         if check_passed:
             d = dict(
                 username=username,
@@ -58,7 +62,7 @@ class User(BaseModel, db.Model):
             error_message = {
                 '1': '该用户名已存在',
                 '2': '用户名不允许包含空格',
-                '3': '用户名长度必须大于2',
+                '3': '用户名和密码长度必须大于2',
             }
             result = error_message.get(error_code, '未知错误')
             return None, result
