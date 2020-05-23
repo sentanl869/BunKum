@@ -20,9 +20,9 @@ def login_view() -> bytes:
 @main.route('/login', methods=['POST'])
 def login() -> bytes:
     form = request.form
-    user = User.login(form)
+    user, result = User.login(form)
     if user is None:
-        return render_template('login.html')
+        return render_template('login.html', result=result)
     else:
         session['user_id'] = user.id
         res = session.pop('redirect')
@@ -40,9 +40,9 @@ def register_view() -> bytes:
 @main.route('/register', methods=['POST'])
 def register() -> bytes:
     form = request.form
-    user = User.register(form)
+    user, result = User.register(form)
     if user is None:
-        return render_template('register.html')
+        return render_template('register.html', result=result)
     else:
         session['user_id'] = user.id
         res = session.pop('redirect')
