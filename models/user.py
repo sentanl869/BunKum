@@ -16,7 +16,7 @@ class User(BaseModel, db.Model):
         return hashed
 
     @staticmethod
-    def register_check(username: str = username, password: str = password) -> tuple:
+    def register_check(username: str, password: str) -> tuple:
         user = User.one(username=username)
         if user is not None:
             error_code = '1'
