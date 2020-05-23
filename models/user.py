@@ -44,7 +44,8 @@ class User(BaseModel, db.Model):
         if user is not None:
             return user, ''
         else:
-            return None, '用户名或密码错误'
+            result = '用户名或密码错误'
+            return None, result
 
     @classmethod
     def register(cls, form: dict) -> tuple:
