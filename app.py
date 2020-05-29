@@ -4,7 +4,7 @@ from secret import mysql_password, secret_key
 from models import db
 from routes.routes_blog import main as blog_route
 from routes.routes_user import main as user_route
-import config
+import db_config
 
 
 def register_routes(app):
