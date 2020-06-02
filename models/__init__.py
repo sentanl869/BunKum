@@ -15,6 +15,10 @@ class BaseModel:
         db.session.add(self)
         db.session.commit()
 
+    def remove(self):
+        db.session.remove(self)
+        db.session.commit()
+
     @classmethod
     def new(cls, form: dict):
         m = cls()
@@ -29,6 +33,11 @@ class BaseModel:
         for name, value in kwargs.items():
             setattr(m, name, value)
         m.save()
+
+    @classmethod
+    def delete(cls, _id: int):
+        m = cls.query.filter_by(id=_id).first()
+        m.remove()
 
     @classmethod
     def all(cls, **kwargs):

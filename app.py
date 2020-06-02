@@ -16,10 +16,10 @@ def configured_app():
     app = Flask(__name__)
     app.secret_key = secret_key
     uri = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
-        config.db_user,
+        db_config.db_user,
         mysql_password,
-        config.db_host,
-        config.db_name,
+        db_config.db_host,
+        db_config.db_name,
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
