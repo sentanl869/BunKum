@@ -6,6 +6,7 @@ from flask import (
     url_for,
 )
 from models.blog import Blog
+from models.comment import Comment
 from routes import (
     current_user,
     login_required,
@@ -40,4 +41,5 @@ def add() -> bytes:
 def detail() -> bytes:
     blog_id = request.args['id']
     blog = Blog.one(id=blog_id)
-    return render_template('blog_detail.html', blog=blog)
+    comments = Comment.all(blog_id=blog_id)
+    return render_template('blog_detail.html', blog=blog, comments=comments)

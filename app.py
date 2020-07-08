@@ -4,12 +4,14 @@ from secret import mysql_password, secret_key
 from models import db
 from routes.routes_blog import main as blog_route
 from routes.routes_user import main as user_route
+from routes.routes_comment import main as comment_route
 import db_config
 
 
 def register_routes(app):
     app.register_blueprint(blog_route)
     app.register_blueprint(user_route)
+    app.register_blueprint(comment_route)
 
 
 def configured_app():

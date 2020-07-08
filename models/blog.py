@@ -12,13 +12,13 @@ class Blog(BaseModel, db.Model):
     def add(cls, form: dict, user):
         title = form['title']
         content = form['content']
-        u = user
+        content = '\r\n' + content
         form = dict(
             title=title,
             content=content,
-            user_id=u.id
+            user_id=user.id,
         )
-        Blog.new(form)
+        cls.new(form)
 
     def author(self):
         u = User.one(id=self.user_id)
