@@ -39,7 +39,8 @@ def add() -> bytes:
 
 @main.route('/detail')
 def detail() -> bytes:
+    user = current_user()
     blog_id = request.args['id']
     blog = Blog.one(id=blog_id)
     comments = Comment.all(blog_id=blog_id)
-    return render_template('blog_detail.html', blog=blog, comments=comments)
+    return render_template('blog_detail.html', blog=blog, comments=comments, user=user)

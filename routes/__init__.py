@@ -25,3 +25,16 @@ def login_required(route_function):
             return route_function()
 
     return r
+
+
+def author_required(route_function):
+    @wraps(route_function)
+    def r():
+        u = current_user()
+        author_id = int(request.form['author_id'])
+        if u is not None and u.id == author_id:
+            return route_function()
+        else:
+            return redirect(url_for('user.login_view'))
+
+    return r

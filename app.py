@@ -24,6 +24,7 @@ def configured_app():
         db_config.db_name,
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     db.init_app(app)
     register_routes(app)

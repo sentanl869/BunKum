@@ -16,10 +16,18 @@
         </form>
         <div id="id-blog-comment-content">
             {% for comment in comments %}
-                <div class="markdown-body">
-                    <p>
+                <div>
+                    <p class="markdown-body">
                         {{ comment.content }}
                     </p>
+                    {% if blog.user_id == user.id %}
+                        <form action="{{ url_for('comment.delete') }}" method="post">
+                            <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            <input type="hidden" name="author_id" value="{{ blog.user_id }}">
+                            <button value="删除">删除</button>
+                        </form>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

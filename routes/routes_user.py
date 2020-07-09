@@ -25,7 +25,7 @@ def login() -> bytes:
         return render_template('login.html', result=result)
     else:
         session['user_id'] = user.id
-        res = session.pop('redirect')
+        res = session.pop('redirect', None)
         if res:
             return redirect(res)
         else:
