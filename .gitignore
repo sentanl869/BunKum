@@ -3,6 +3,9 @@
 .git
 venv
 __pycache__
+.vagrant
+.env
 *.pyc
+*.log
 secret.py
 db_config.py

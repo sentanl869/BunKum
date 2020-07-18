@@ -1,0 +1,11 @@
+server {
+    listen 80;
+
+    location /static {
+        alias /var/www/blog/static;
+    }
+
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+}
