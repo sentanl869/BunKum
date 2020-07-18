@@ -11,7 +11,7 @@ class Blog(BaseModel, db.Model):
     @classmethod
     def add(cls, form: dict, user):
         title = form['title']
-        content = form['content']
+        content: str = form['content']
         content = '\r\n' + content
         form = dict(
             title=title,

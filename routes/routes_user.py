@@ -26,7 +26,7 @@ def login() -> bytes:
     else:
         session['user_id'] = user.id
         res = session.pop('redirect', None)
-        if res:
+        if res is not None:
             return redirect(res)
         else:
             return redirect(url_for('blog.index'))
@@ -45,8 +45,8 @@ def register() -> bytes:
         return render_template('register.html', result=result)
     else:
         session['user_id'] = user.id
-        res = session.pop('redirect')
-        if res:
+        res = session.pop('redirect', None)
+        if res is not None:
             return redirect(res)
         else:
             return redirect(url_for('blog.index'))

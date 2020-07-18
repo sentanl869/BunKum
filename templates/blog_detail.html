@@ -9,11 +9,13 @@
     <div>作者：{{ blog.author() }}</div>
     <article id="id-blog-content" class="markdown-body">{{ blog.content }}</article>
     <div id="id-blog-comment">
-        <form action="{{ url_for('comment.add') }}" method="post">
-            <input type="hidden" name="blog_id" value="{{ blog.id }}">
-            <textarea name="content" placeholder="请输入评论内容"></textarea>
-            <button value="发表评论">发表评论</button>
-        </form>
+        {% if user %}
+            <form action="{{ url_for('comment.add') }}" method="post">
+                <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                <textarea name="content" placeholder="请输入评论内容"></textarea>
+                <button value="发表评论">发表评论</button>
+            </form>
+        {% endif %}
         <div id="id-blog-comment-content">
             {% for comment in comments %}
                 <div>
