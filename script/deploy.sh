@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-
 set -ex
 
-apt-get install -y curl ufw
+apt-get install -y ufw
 ufw allow 22
 ufw allow 80
 ufw allow 443
@@ -19,7 +18,7 @@ mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('loc
 mysql -u root -e "DROP DATABASE IF EXISTS test;"
 mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 
-mysql_password=$(awk -F "[']" 'NR==1 {print $2}' /var/www/blog/secret.py)
+mysql_password=$(awk -F '[=\r]' 'NR==1 {print $2}' /var/www/blog/.env)
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_password';"
 
 rm -f /etc/nginx/sites-enabled/default

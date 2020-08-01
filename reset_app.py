@@ -1,21 +1,23 @@
+from os import getenv
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from app import configured_app
 from models import db
-from secret import mysql_password
-import db_config
 
 
 def recreate_database():
+    load_dotenv()
+    db_name = getenv('db_name')
     uri = 'mysql+pymysql://{}:{}@{}/?charset=utf8mb4'.format(
-        db_config.db_user,
-        mysql_password,
-        db_config.db_host,
+        getenv('db_user'),
+        getenv('mysql_password'),
+        getenv('db_host'),
     )
     engine = create_engine(uri, echo=True)
     with engine.connect() as c:
-        c.execute('DROP DATABASE IF EXISTS {};'.format(db_config.db_name))
-        c.execute('CREATE DATABASE {} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'.format(db_config.db_name))
-        c.execute('USE {};'.format(db_config.db_name))
+        c.execute('DROP DATABASE IF EXISTS {};'.format(db_name))
+        c.execute('CREATE DATABASE {} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'.format(db_name))
+        c.execute('USE {};'.format(db_name))
     db.metadata.create_all(bind=engine)
 
 

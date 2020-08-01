@@ -1,11 +1,11 @@
 from flask import Flask
+from dotenv import load_dotenv
+from os import getenv
 from datetime import timedelta
-from secret import mysql_password, secret_key
 from models import db
 from routes.routes_blog import main as blog_route
 from routes.routes_user import main as user_route
 from routes.routes_comment import main as comment_route
-import db_config
 
 
 def register_routes(app):
@@ -15,13 +15,14 @@ def register_routes(app):
 
 
 def configured_app():
+    load_dotenv()
     app = Flask(__name__)
-    app.secret_key = secret_key
+    app.secret_key = getenv('secret_key')
     uri = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
-        db_config.db_user,
-        mysql_password,
-        db_config.db_host,
-        db_config.db_name,
+        getenv('db_user'),
+        getenv('mysql_password'),
+        getenv('db_host'),
+        getenv('db_name'),
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True

@@ -1,7 +1,7 @@
+from os import getenv
 from hashlib import sha256
 from sqlalchemy import Column, String
 from models import BaseModel, db
-from secret import salt
 
 
 class User(BaseModel, db.Model):
@@ -10,6 +10,7 @@ class User(BaseModel, db.Model):
 
     @staticmethod
     def salted_password(password: str) -> str:
+        salt = getenv('salt')
         password = sha256(password.encode('ascii')).hexdigest()
         salted = password + salt
         hashed = sha256(salted.encode('ascii')).hexdigest()
