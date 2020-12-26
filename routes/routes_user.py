@@ -14,8 +14,7 @@ from models.user import User
 from models.role import Role, Permission
 from models.comment import Comment
 from models.helper import send_email
-from routes import admin_required, current_user_object
-from routes.forms import (
+from models.forms import (
     LoginForm,
     RegistrationForm,
     ChangePasswordForm,
@@ -26,6 +25,7 @@ from routes.forms import (
     EditProfileForm,
     EditProfileAdminForm,
 )
+from routes import admin_required, current_user_object
 
 
 main = Blueprint('user', __name__, url_prefix='/user')

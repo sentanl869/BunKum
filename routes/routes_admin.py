@@ -15,8 +15,9 @@ from models.blog import Blog
 from models.role import Role
 from models.category import Category
 from models.comment import Comment
+from models.forms import EditCategoryForm, EditCommentForm
 from routes import admin_required
-from routes.forms import EditCategoryForm, EditCommentForm
+
 
 
 main = Blueprint('admin', __name__, url_prefix='/admin')

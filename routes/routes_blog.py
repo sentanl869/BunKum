@@ -11,10 +11,10 @@ from flask import (
 from flask_login import current_user, login_required
 
 from routes import current_user_object, admin_required
-from routes.forms import PostForm, CommentForm
 from models.blog import Blog
 from models.comment import Comment
 from models.category import Category
+from models.forms import PostForm, CommentForm
 
 
 main = Blueprint('blog', __name__)
