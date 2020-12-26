@@ -1,40 +1,26 @@
-from flask import (
-    session,
-    redirect,
-    url_for,
-    request,
-)
 from functools import wraps
+
+from flask import abort
+from flask_login import current_user
+
 from models.user import User
+from models.role import Permission
 
 
-def current_user():
-    user_id = session.get('user_id', -1)
-    u = User.one(id=user_id)
-    return u
+def permission_required(permission: int):
+    def decorator(route_function):
+        @wraps(route_function)
+        def decorated_function(*args, **kwargs):
+            if not current_user.can(permission):
+                abort(404)
+            return route_function(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 
-def login_required(route_function):
-    @wraps(route_function)
-    def r():
-        u = current_user()
-        if u is None:
-            session['redirect'] = request.path
-            return redirect(url_for('user.login_view'))
-        else:
-            return route_function()
-
-    return r
+def admin_required(route_function):
+    return permission_required(Permission.ADMIN)(route_function)
 
 
-def author_required(route_function):
-    @wraps(route_function)
-    def r():
-        u = current_user()
-        author_id = int(request.form['author_id'])
-        if u is not None and u.id == author_id:
-            return route_function()
-        else:
-            return redirect(url_for('user.login_view'))
-
-    return r
+def current_user_object(_id: int) -> User:
+    return User.one(id=_id)

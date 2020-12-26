@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.1/styles/a11y-light.css">
+{% endblock %}
+
+
+{% block title %}用户资料{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <img class="img-rounded profile-thumbnail" src="{{ user.avatar_url }}" height="256" width="256" alt="">
+        <div class="profile-header">
+            <h1>{{ user.username }}</h1>
+            {% if current_user.is_administrator() %}
+                <p>用户ID：{{ user.id }}</p>
+                <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+            {% elif current_user == user %}
+                <p>注册邮箱：{{ user.email }}</p>
+            {% endif %}
+            <p>
+                加入于 {{ moment(user.created_time).format('L') }}。
+                最后活跃 {{ moment(user.last_seen).fromNow() }}。
+            </p>
+            <p>
+                {% if user == current_user or current_user.is_administrator() %}
+                    <a class="btn btn-default" href="{{ url_for('user.change_avatar', username=user.username) }}">
+                        更改头像
+                    </a>
+                {% endif %}
+                {% if user == current_user %}
+                    <a class="btn btn-default" href="{{ url_for('user.edit_profile') }}">
+                        编辑资料
+                    </a>
+                {% endif %}
+                {% if current_user.is_administrator() %}
+                    <a class="btn btn-danger" href="{{ url_for('user.edit_profile_admin', _id=user.id) }}">
+                        编辑资料[Admin]
+                    </a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    {% if comments %}
+        <h3>{{ user.username }}发表的评论</h3>
+        {% include "_comments.html" %}
+        {% if pagination and pagination.pages > 1 %}
+            <div class="pagination">
+                {{ macros.pagination_widget(pagination, 'user.profile', fragment='#comments', username=user.username) }}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.4.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}

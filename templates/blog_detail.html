@@ -1,51 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ blog.title }}</title>
-</head>
-<body>
-    <div>{{ blog.title }}</div>
-    <div>作者：{{ blog.author() }}</div>
-    <article id="id-blog-content" class="markdown-body">{{ blog.content }}</article>
-    <div id="id-blog-comment">
-        {% if user %}
-            <form action="{{ url_for('comment.add') }}" method="post">
-                <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                <textarea name="content" placeholder="请输入评论内容"></textarea>
-                <button value="发表评论">发表评论</button>
-            </form>
-        {% endif %}
-        <div id="id-blog-comment-content">
-            {% for comment in comments %}
-                <div>
-                    <p class="markdown-body">
-                        {{ comment.content }}
-                    </p>
-                    {% if blog.user_id == user.id %}
-                        <form action="{{ url_for('comment.delete') }}" method="post">
-                            <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                            <input type="hidden" name="author_id" value="{{ blog.user_id }}">
-                            <button value="删除">删除</button>
-                        </form>
-                    {% endif %}
+{% extends "index_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.1/styles/a11y-light.css">
+{% endblock %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block index_main_content %}
+    <div class="col-sm-8">
+        <div class="blog-post blog-main">
+            <h2 class="blog-post-title">{{ post.title }}</h2>
+            {% if current_user.is_administrator() %}
+                <a href="{{ url_for('blog.edit', _id=post.id) }}" class="btn btn-warning btn-xs" role="button">编辑</a>
+                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm">删除</button>
+                <div class="modal fade bs-delete-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">警告！</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>请确认，是否删除该篇博客？</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <form class="blog-delete" action="{{ url_for('blog.delete') }}" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input type="hidden" name="_id" value="{{ post.id }}">
+                                    <button type="submit" class="btn btn-danger">删除</button>
+                                </form>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.css">
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/prism.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css">
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script>
-        let BlogDiv = document.querySelectorAll('.markdown-body');
-        for (let i = 0;i < BlogDiv.length; i++) {
-            let content = BlogDiv[i].textContent;
-            BlogDiv[i].innerHTML = marked(content);
-        }
-        Prime.plugins.autoloader.language_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/';
-    </script>
-</body>
-</html>
+            {% endif %}
+            <p class="blog-post-meta">{{ moment(post.created_time).format('LLL') }} by <a href="{{ url_for('user.profile', username=post.author.username) }}">{{ post.author.username }}</a></p>
+            <article>
+                {{ post.content_html | safe }}
+            </article>
+        </div><!-- /.blog-post -->
+        <hr>
+        {% if comments or current_user.can(Permission.COMMENT) %}
+            <h4 id="comments">评论区</h4>
+            {% if current_user.can(Permission.COMMENT) %}
+                <div class="comment-form">
+                    {{ wtf.quick_form(form) }}
+                </div>
+            {% endif %}
+            {% include '_comments.html' %}
+            {% if pagination and pagination.pages > 1 %}
+                <div class="pagination">
+                    {{ macros.pagination_widget(pagination, 'blog.detail', fragment='#comments', _id=post.id) }}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div><!-- /.blog-main -->
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.4.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}

@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-</head>
-<body>
-    <form action="{{ url_for('user.register') }}" method="post">
-        <input name="username" type="text" placeholder="请输入用户名">
-        <input name="password" type="text" placeholder="请输入密码">
-        <button type="submit" value="注册">注册</button>
-        <div>{{ result }}</div>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}注册{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>注册</h1>
+    </div>
+    <div class="col-md-4">
+        {{ wtf.quick_form(form) }}
+    </div>
+{% endblock %}

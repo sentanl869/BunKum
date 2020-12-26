@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='admin.css') }}">
+{% endblock %}
+
+{% block flask_message %}{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            {% block nav_sidebar %}
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="{{ url_for('admin.blog_index') }}">博客文章<span class="sr-only">(current)</span></a></li>
+                    <li><a href="{{ url_for('admin.category_index') }}">文章分类</a></li>
+                    <li><a href="{{ url_for('admin.user_index') }}">用户管理</a></li>
+                    <li><a href="{{ url_for('admin.comment_index') }}">评论管理</a></li>
+                </ul>
+            {% endblock %}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-1 main">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <h1 class="page-header">后台管理</h1>
+            {% block table_content %}
+                <h2 class="sub-header">博客文章</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>标题</th>
+                                <th>内容</th>
+                                <th>作者</th>
+                                <th>文章分类</th>
+                                <th>评论数量</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts %}
+                                <tr>
+                                    <td>{{ post.id }}</td>
+                                    <td><a href="{{ url_for('blog.detail', _id=post.id) }}">{{ post.title | truncate(10) }}</a></td>
+                                    <td>{{ post.content | truncate(15) }}</td>
+                                    <td>{{ post.author.username }}</td>
+                                    <td><a href="{{ url_for('admin.blog_by_category_index', _id=post.category.id) }}">{{ post.category.name }}</a></td>
+                                    <td><a href="{{ url_for('admin.comment_by_blog_index', _id=post.id) }}">{{ post.comments.count() }}</a></td>
+                                    <td>
+                                        <a href="{{ url_for('blog.edit', _id=post.id, next=next) }}" class="btn btn-warning btn-xs" role="button">编辑</a>
+                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ post.id }}">删除</button>
+                                        <div class="modal fade bs-delete-modal-sm-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">警告！</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>请确认，是否删除该篇博客？</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                        <form class="blog-delete" action="{{ url_for('admin.blog_delete') }}" method="post">
+                                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                            <input type="hidden" name="_id" value="{{ post.id }}">
+                                                            <input type="hidden" name="next" value="{{ next }}">
+                                                            <button type="submit" class="btn btn-danger">删除</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endblock %}
+            {% block admin_index_pagination %}
+                {% if pagination and pagination.pages > 1 %}
+                    <div class="pagination">
+                        {% if endpoint %}
+                            {{ macros.pagination_widget(pagination, endpoint, _id=_id) }}
+                        {% else %}
+                            {{ macros.pagination_widget(pagination, 'admin.blog_index') }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

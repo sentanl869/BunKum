@@ -1,17 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog</title>
-</head>
-<body>
-    <a href="{{ url_for('blog.new') }}">添加博客</a>
-    {% for blog in blogs %}
-        <div>
-            <a href="{{ url_for('blog.detail', id=blog.id) }}">
-                {{ blog.title }}
-            </a>
+{% extends "index_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block jumbotron %}
+    <div class="jumbotron">
+        <h1 class="blog-title">BunKum</h1>
+        <p class="lead blog-description">一个人的胡言乱语。</p>
+    </div>
+{% endblock %}
+
+{% block index_main_content %}
+    <div class="col-sm-8 blog-main">
+        {% for post in posts %}
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{ post.title }}</h2>
+                <p class="blog-post-meta">
+                    <a href="{{ url_for('blog.sort', _id=post.category.id) }}" class="label-tag">
+                        <span class="label label-primary">{{ post.category.name }}</span>
+                    </a>
+                    {{ moment(post.created_time).format('LLL') }} by <a href="{{ url_for('user.profile', username=post.author.username) }}">{{ post.author.username }}</a>
+                </p>
+                <article>
+                    {{ post.content_html | safe | truncate(256, True) | striptags }}
+                </article>
+            </div><!-- /.blog-post -->
+            <div class="post-footer">
+                <a href="{{ url_for('blog.detail', _id=post.id) }}" class="label-tag">
+                    <span class="label label-info">阅读全文</span>
+                </a>
+                <a href="{{ url_for('blog.detail', _id=post.id) }}#comments" class="label-tag">
+                    <span class="label label-default">{{ post.comments.count() }} 评论</span>
+                </a>
+            </div>
+            <hr>
+        {% endfor %}
+    </div><!-- /.blog-main -->
+{% endblock %}
+
+{% block index_pagination %}
+    {% if pagination and pagination.pages > 1 %}
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination, 'blog.index') }}
         </div>
-    {% endfor %}
-</body>
-</html>
+    {% endif %}
+{% endblock %}

@@ -34,6 +34,8 @@ pip3 install gunicorn gevent psutil
 pip3 install -r requirements.txt
 service mysql restart
 python3 reset_app.py
+export FLASK_APP=run.py
+flask deploy
 
 service supervisor restart
 service nginx restart

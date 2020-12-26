@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-    <form action="{{ url_for('user.login') }}" method="post">
-        <input name="username" type="text" placeholder="请输入用户名">
-        <input name="password" type="password" placeholder="请输入密码">
-        <button type="submit" value="登录">登录</button>
-        <div>如果您还没有账号，请点击这里<a href="{{ url_for('user.register_view') }}">注册</a></div>
-        <div>{{ result }}</div>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}登录{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>登录</h1>
+    </div>
+    <div class="col-md-4">
+        {{ wtf.quick_form(form) }}
+        <br>
+        <p>忘记密码? <a href="{{ url_for('user.password_reset') }}">点击这里重置</a>。</p>
+        <p>新用户? <a href="{{ url_for('user.register') }}">点击这里注册</a>。</p>
+    </div>
+{% endblock %}

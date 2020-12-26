@@ -1,0 +1,77 @@
+{% extends "admin_index.html" %}
+
+{% block nav_sidebar %}
+    <ul class="nav nav-sidebar">
+        <li><a href="{{ url_for('admin.blog_index') }}">博客文章</a></li>
+        <li><a href="{{ url_for('admin.category_index') }}">文章分类</a></li>
+        <li><a href="{{ url_for('admin.user_index') }}">用户管理</a></li>
+        <li class="active"><a href="{{ url_for('admin.comment_index') }}">评论管理<span class="sr-only">(current)</span></a></li>
+    </ul>
+{% endblock %}
+
+{% block table_content %}
+    <h2 class="sub-header">评论管理</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>评论内容</th>
+                    <th><a href="{{ url_for('admin.comment_by_disabled_index') }}">屏蔽</a></th>
+                    <th>评论作者</th>
+                    <th>所属文章标题</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.id }}</td>
+                        <td>{{ comment.content | truncate(15) }}</td>
+                        <td>{{ comment.disabled }}</td>
+                        <td><a href="{{ url_for('user.profile', username=comment.author.username) }}">{{ comment.author.username }}</a></td>
+                        <td><a href="{{ url_for('blog.detail', _id=comment.blog.id) }}">{{ comment.blog.title | truncate(10) }}</a></td>
+                        <td>
+                            <a href="{{ url_for('admin.comment_edit', _id=comment.id, next=next) }}" class="btn btn-warning btn-xs" role="button">编辑</a>
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ comment.id }}">删除</button>
+                            <div class="modal fade bs-delete-modal-sm-{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                <div class="modal-dialog modal-sm" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">警告！</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>请确认，是否删除该条评论？</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <form class="blog-delete" action="{{ url_for('admin.comment_delete') }}" method="post">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                <input type="hidden" name="_id" value="{{ comment.id }}">
+                                                <input type="hidden" name="next" value="{{ next }}">
+                                                <button type="submit" class="btn btn-danger">删除</button>
+                                            </form>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block admin_index_pagination %}
+    {% if pagination and pagination.pages > 1 %}
+        <div class="pagination">
+            {% if endpoint %}
+                {{ macros.pagination_widget(pagination, endpoint, _id=_id) }}
+            {% else %}
+                {{ macros.pagination_widget(pagination, 'admin.comment_index') }}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

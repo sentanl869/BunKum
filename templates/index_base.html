@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block jumbotron %}{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        {% block index_main_content %}{% endblock %}
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>About</h4>
+                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+            </div>
+            <div class="sidebar-module">
+                <h4>文章分类</h4>
+                <ol class="list-unstyled">
+                    {% for category in categories %}
+                        {% if category.posts.count() > 0 %}
+                            <li><a href="{{ url_for('blog.sort', _id=category.id) }}">{{ category.name }}（{{ category.posts.count() }}）</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="sidebar-module">
+                <h4>Elsewhere</h4>
+                <ol class="list-unstyled">
+                    <li><a href="https://github.com/sentanl869">GitHub</a></li>
+                </ol>
+            </div>
+        </div><!-- /.blog-sidebar -->
+    </div><!-- /.row -->
+    {% block index_pagination %}{% endblock %}
+{% endblock %}

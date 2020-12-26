@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.1/styles/a11y-light.css">
+{% endblock %}
+
+{% block title %}管理评论{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>评论管理</h1>
+    </div>
+    {% set moderate = True %}
+    {% include '_comments.html' %}
+    {% if pagination and pagination.pages > 1 %}
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination, 'comment.moderate') }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.4.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
