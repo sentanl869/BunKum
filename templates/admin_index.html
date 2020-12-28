@@ -27,7 +27,7 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <h1 class="page-header">后台管理</h1>
+            <h1 class="page-header">{% block page_title %}后台管理{% endblock %}</h1>
             {% block table_content %}
                 <h2 class="sub-header">博客文章</h2>
                 <div class="table-responsive">

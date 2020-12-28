@@ -10,6 +10,7 @@ from models.user import User
 from models.blog import Blog
 from models.comment import Comment
 from models.category import Category
+from models.message import Message
 
 
 def fake_users(count=100) -> None:
@@ -82,11 +83,27 @@ def fake_comments(count=30) -> None:
     print(f'fake_comments cost {(end_time - start_time)} seconds.')
 
 
+def fake_messages(count=100) -> None:
+    start_time = time()
+    fake = Factory.create('zh_CN')
+    receiver = User.one(email=os.environ.get('ADMIN_ACCOUNT'))
+    user_count = User.count()
+    for _ in range(count):
+        author = User.offset(randint(0, user_count - 1))
+        form_dict = {
+            'content': fake.text()
+        }
+        Message.add(form_dict, author, receiver)
+    end_time = time()
+    print(f'fake_messages cost {(end_time - start_time)} seconds.')
+
+
 def fake_all() -> None:
     start_time = time()
     fake_users()
     fake_categories()
     fake_posts()
     fake_comments()
+    fake_messages()
     end_time = time()
     print(f'Total cost {(end_time - start_time)} seconds.')

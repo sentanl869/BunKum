@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}发送消息{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>发送消息</h1>
+    </div>
+    <div class="col-md-10">
+        {{ wtf.quick_form(form) }}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock %}

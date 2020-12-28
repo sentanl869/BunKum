@@ -206,7 +206,11 @@ class PostForm(FlaskForm):
     title = StringField('博客标题：', validators=[DataRequired(), Length(1, 64)])
     category = SelectField('文章分类：', coerce=int, default=1)
     new_category = StringField('新分类：', validators=[Optional(), Length(1, 64)])
-    content = PageDownField('此刻有什么想法？', validators=[DataRequired()])
+    content = PageDownField(
+        '此刻有什么想法？',
+        validators=[DataRequired()],
+        render_kw={'rows': 10}
+    )
     submit = SubmitField('提交')
 
     def __init__(self, *args, **kwargs) -> None:
@@ -221,7 +225,10 @@ class PostForm(FlaskForm):
 
 
 class CommentForm(FlaskForm):
-    content = TextAreaField('', validators=[DataRequired()])
+    content = TextAreaField(
+        '',
+        validators=[DataRequired()],
+        render_kw={'rows': 4})
     submit = SubmitField('发表评论')
 
 
@@ -240,6 +247,19 @@ class EditCategoryForm(FlaskForm):
 
 
 class EditCommentForm(FlaskForm):
-    content = PageDownField('', validators=[DataRequired()])
+    content = PageDownField(
+        '',
+        validators=[DataRequired()],
+        render_kw={'rows': 10}
+    )
     disabled = BooleanField('屏蔽')
     submit = SubmitField('应用更改')
+
+
+class MessageForm(FlaskForm):
+    content = PageDownField(
+        '',
+        validators=[DataRequired()],
+        render_kw={'rows': 10}
+    )
+    submit = SubmitField('发送')

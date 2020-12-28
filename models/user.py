@@ -15,6 +15,7 @@ from flask import current_app
 from flask_login import UserMixin
 
 from models import BaseModel
+from models.message import Message
 from models.role import Role, Permission
 from models.helper import db, login_manager
 
@@ -31,6 +32,19 @@ class User(BaseModel, db.Model, UserMixin):
     avatar_url = Column(String(64), default=None)
     posts = relationship('Blog', backref='author', lazy='dynamic')
     comments = relationship('Comment', backref='author', lazy='dynamic')
+    last_message_read_time = Column(DateTime, default=datetime.utcnow)
+    messages_sent = relationship(
+        'Message',
+        foreign_keys=[Message.sender_id],
+        backref='author',
+        lazy='dynamic'
+    )
+    messages_received = relationship(
+        'Message',
+        foreign_keys=[Message.receiver_id],
+        backref='receiver',
+        lazy='dynamic'
+    )
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -57,6 +71,25 @@ class User(BaseModel, db.Model, UserMixin):
         )
         return ms
 
+    def messages_received_page(self, page: int, per_page: int, *args):
+        ms = self.messages_received.order_by(*args).paginate(
+            page, per_page=per_page, error_out=False
+        )
+        return ms
+
+    def messages_sent_page(self, page: int, per_page: int, *args):
+        ms = self.messages_sent.order_by(*args).paginate(
+            page, per_page=per_page, error_out=False
+        )
+        return ms
+
+    def unread_message_count(self) -> int:
+        ms = Message.unread_message_count(
+            Message.created_time > self.last_message_read_time,
+            receiver=self
+        )
+        return ms
+
     @property
     def password(self) -> Exception:
         raise AttributeError('password is not readable attribute')
@@ -76,6 +109,10 @@ class User(BaseModel, db.Model, UserMixin):
 
     def ping(self) -> None:
         self.last_seen = datetime.utcnow()
+        self.save()
+
+    def read(self) -> None:
+        self.last_message_read_time = datetime.utcnow()
         self.save()
 
     def avatar_save(self, avatar_file) -> str:

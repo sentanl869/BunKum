@@ -20,6 +20,9 @@ footer {
 footer p:last-child {
     margin-bottom: 0;
 }
+textarea {
+    resize: none;
+}
 .jumbotron {
     background-image: url("../static/jumbotron_background_image.jpg");
     background-size: cover;
@@ -91,6 +94,7 @@ div.comment-date {
 }
 div.comment-author {
     font-weight: bold;
+    margin-bottom: 4px;
 }
 div.comment-thumbnail {
     position: absolute;
@@ -184,4 +188,36 @@ form.blog-delete {
 .sidebar-module-inset ul:last-child,
 .sidebar-module-inset ol:last-child {
   margin-bottom: 0;
+}
+.badge {
+    margin-left: 2px;
+}
+ul.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 16px 0 0 0;
+}
+ul.messages li.message {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.messages li.message:nth-child(1) {
+    border-top: 1px solid #e0e0e0;
+}
+div.message-date {
+    float: right;
+}
+div.message-author {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+div.message-thumbnail {
+    position: absolute;
+}
+div.message-content {
+    margin-left: 28px;
+    min-height: 48px;
+}
+div.message-form {
+    margin-bottom: 16px;
 }

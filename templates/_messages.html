@@ -1,0 +1,18 @@
+<ul class="messages">
+    {% for message in messages %}
+        <li class="message">
+            <div class="message-thumbnail">
+                <a href="{{ url_for('user.profile', username=message.author.username) }}">
+                    <img class="img-rounded profile-thumbnail" src="{{ message.author.avatar_url }}" alt="{{ message.author.username }}" height="24px" width="24px">
+                </a>
+            </div>
+            <div class="message-content">
+                <div class="message-date">{{ moment(message.created_time).fromNow() }}</div>
+                <div class="message-author"><a href="{{ url_for('user.profile', username=message.author.username) }}">{{ message.author.username }}</a></div>
+                <div class="message-body">
+                    {{ message.content_html | safe }}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

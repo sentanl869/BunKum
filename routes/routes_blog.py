@@ -56,7 +56,7 @@ def new() -> bytes:
         Blog.add(form_dict, user)
         flash('新博客发布成功！')
         return redirect(url_for('blog.index'))
-    return render_template('blog_new.html', form=form)
+    return render_template('new_blog.html', form=form)
 
 
 @main.route('/edit/<int:_id>', methods=['GET', 'POST'])
@@ -86,7 +86,7 @@ def edit(_id: int) -> bytes:
     form.category.data = blog.category_id
     form.content.data = blog.content
     return render_template(
-        'blog_new.html',
+        'new_blog.html',
         form=form,
         next=request.full_path
     )

@@ -35,6 +35,11 @@
                         编辑资料
                     </a>
                 {% endif %}
+                {% if current_user.is_authenticated and user != current_user %}
+                    <a class="btn btn-default" href="{{ url_for('message.new', username=user.username) }}">
+                        发送消息
+                    </a>
+                {% endif %}
                 {% if current_user.is_administrator() %}
                     <a class="btn btn-danger" href="{{ url_for('user.edit_profile_admin', _id=user.id) }}">
                         编辑资料[Admin]
