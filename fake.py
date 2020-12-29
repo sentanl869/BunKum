@@ -86,10 +86,18 @@ def fake_comments(count=30) -> None:
 def fake_messages(count=100) -> None:
     start_time = time()
     fake = Factory.create('zh_CN')
-    receiver = User.one(email=os.environ.get('ADMIN_ACCOUNT'))
+    user = User.one(email=os.environ.get('ADMIN_ACCOUNT'))
     user_count = User.count()
     for _ in range(count):
         author = User.offset(randint(0, user_count - 1))
+        receiver = user
+        form_dict = {
+            'content': fake.text()
+        }
+        Message.add(form_dict, author, receiver)
+    for _ in range(count):
+        author = user
+        receiver = User.offset(randint(0, user_count - 1))
         form_dict = {
             'content': fake.text()
         }

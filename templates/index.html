@@ -15,7 +15,7 @@
             <div class="blog-post">
                 <h2 class="blog-post-title">{{ post.title }}</h2>
                 <p class="blog-post-meta">
-                    <a href="{{ url_for('blog.sort', _id=post.category.id) }}" class="label-tag">
+                    <a href="{{ url_for('blog.sort', name=post.category.name) }}" class="label-tag">
                         <span class="label label-primary">{{ post.category.name }}</span>
                     </a>
                     {{ moment(post.created_time).format('LLL') }} by <a href="{{ url_for('user.profile', username=post.author.username) }}">{{ post.author.username }}</a>
@@ -40,7 +40,11 @@
 {% block index_pagination %}
     {% if pagination and pagination.pages > 1 %}
         <div class="pagination">
-            {{ macros.pagination_widget(pagination, 'blog.index') }}
+            {% if endpoint %}
+                {{ macros.pagination_widget(pagination, endpoint, name=name) }}
+            {% else %}
+                {{ macros.pagination_widget(pagination, 'blog.index') }}
+            {% endif %}
         </div>
     {% endif %}
 {% endblock %}

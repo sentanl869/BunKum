@@ -138,9 +138,11 @@ def delete() -> bytes:
     return redirect(url_for('blog.index'))
 
 
-@main.route('/<int:_id>')
-def sort(_id: int) -> bytes:
-    category = Category.one(id=_id)
+@main.route('/<name>')
+def sort(name: str) -> bytes:
+    category = Category.one(name=name)
+    if category is None:
+        abort(404)
     page = request.args.get('page', 1, type=int)
     pagination = category.posts_page(
         page,
@@ -151,6 +153,8 @@ def sort(_id: int) -> bytes:
     categories = Category.order(Category.id)
     return render_template(
         'index.html',
+        name=name,
+        endpoint='blog.sort',
         posts=posts,
         pagination=pagination,
         categories=categories

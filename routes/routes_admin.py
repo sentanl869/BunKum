@@ -250,7 +250,7 @@ def comment_by_blog_index(_id: int) -> bytes:
     comments = pagination.items
     return render_template(
         'admin_comment.html',
-        _id=blog.id,
+        _id=_id,
         endpoint='admin.comment_by_blog_index',
         comments=comments,
         pagination=pagination,
@@ -274,7 +274,7 @@ def comment_by_user_index(_id: int) -> bytes:
     comments = pagination.items
     return render_template(
         'admin_comment.html',
-        _id=user.id,
+        _id=_id,
         endpoint='admin.comment_by_user_index',
         comments=comments,
         pagination=pagination,
@@ -298,7 +298,7 @@ def blog_by_category_index(_id: int) -> bytes:
     posts = pagination.items
     return render_template(
         'admin_index.html',
-        _id=category.id,
+        _id=_id,
         endpoint='admin.blog_by_category_index',
         posts=posts,
         pagination=pagination,
@@ -322,7 +322,7 @@ def user_by_role_index(_id: int) -> bytes:
     users = pagination.items
     return render_template(
         'admin_user.html',
-        _id=role.id,
+        _id=_id,
         endpoint='admin.user_by_role_index',
         users=users,
         pagination=pagination,
