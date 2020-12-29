@@ -73,7 +73,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder ".", "/var/www/blog"
 
-  config.vm.network "forwarded_port", guest: 80, host: 2080
+  config.vm.network "forwarded_port", guest: 80, host: 80
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "blog_base_ubuntu"

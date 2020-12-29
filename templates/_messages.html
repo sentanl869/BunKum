@@ -7,8 +7,21 @@
                 </a>
             </div>
             <div class="message-content">
-                <div class="message-date">{{ moment(message.created_time).fromNow() }}</div>
-                <div class="message-author"><a href="{{ url_for('user.profile', username=message.author.username) }}">{{ message.author.username }}</a></div>
+                <div class="message-date">
+                    {% if current_user == message.receiver %}
+                        <a href="{{ url_for('message.new', username=message.author.username) }}" class="btn btn-default btn-xs" role="button">回复</a>
+                    {% endif %}
+                    {{ moment(message.created_time).fromNow() }}
+                </div>
+                <div class="message-author">
+                    <a href="{{ url_for('user.profile', username=message.author.username) }}">
+                        {{ message.author.username }}
+                    </a>
+                    <span>&nbsp;发送给&nbsp;</span>
+                    <a href="{{ url_for('user.profile', username=message.receiver.username) }}">
+                        {{ message.receiver.username }}
+                    </a>
+                </div>
                 <div class="message-body">
                     {{ message.content_html | safe }}
                 </div>

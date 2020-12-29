@@ -8,7 +8,18 @@
             </div>
             <div class="comment-content">
                 <div class="comment-date">{{ moment(comment.created_time).fromNow() }}</div>
-                <div class="comment-author"><a href="{{ url_for('user.profile', username=comment.author.username) }}">{{ comment.author.username }}</a></div>
+                <div class="comment-author">
+                    <a href="{{ url_for('user.profile', username=comment.author.username) }}">
+                        {{ comment.author.username }}
+                    </a>
+                    {% if not detail %}
+                        <span>&nbsp;在&nbsp;</span>
+                        <a href="{{ url_for('blog.detail', _id=comment.blog_id) }}">
+                            {{ comment.blog.title | truncate(15)}}
+                        </a>
+                        <span>&nbsp;中的评论&nbsp;</span>
+                    {% endif %}
+                </div>
                 <div class="comment-body">
                     {% if comment.disabled %}
                         <p><i>该评论已被管理员禁用。</i></p>

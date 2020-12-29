@@ -51,6 +51,7 @@
                     {{ wtf.quick_form(form) }}
                 </div>
             {% endif %}
+            {% set detail = True %}
             {% include '_comments.html' %}
             {% if pagination and pagination.pages > 1 %}
                 <div class="pagination">
