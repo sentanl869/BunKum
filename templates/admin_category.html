@@ -6,6 +6,7 @@
         <li class="active"><a href="{{ url_for('admin.category_index') }}">文章分类<span class="sr-only">(current)</span></a></li>
         <li><a href="{{ url_for('admin.user_index') }}">用户管理</a></li>
         <li><a href="{{ url_for('admin.comment_index') }}">评论管理</a></li>
+        <li><a href="{{ url_for('admin.message_index') }}">站内信管理</a></li>
     </ul>
 {% endblock %}
 
@@ -17,7 +18,7 @@
                 <tr>
                     <th>#</th>
                     <th>名称</th>
-                    <th>默认值</th>
+                    <th>默认条目</th>
                     <th>文章数量</th>
                     <th>操作</th>
                 </tr>
@@ -26,7 +27,7 @@
                 {% for category in categories %}
                     <tr>
                         <td>{{ category.id }}</td>
-                        <td><a href="{{ url_for('admin.blog_by_category_index', _id=category.id) }}">{{ category.name }}</a></td>
+                        <td><a href="{{ url_for('admin.blog_by_category_index', name=category.name) }}">{{ category.name }}</a></td>
                         <td>{{ category.default }}</td>
                         <td>{{ category.posts.count() }}</td>
                         <td>

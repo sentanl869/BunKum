@@ -22,3 +22,13 @@ class Comment(BaseModel, db.Model):
             blog=blog,
             author=user
         )
+
+    @classmethod
+    def edit(cls, form: dict, comment) -> None:
+        content_html = safe_markdown(form['content'])
+        cls.update(
+            comment,
+            content=form['content'],
+            content_html=content_html,
+            disabled=form['disabled'],
+        )

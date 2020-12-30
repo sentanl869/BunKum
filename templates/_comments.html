@@ -32,7 +32,7 @@
                     {% if comment.disabled %}
                         <a class="btn btn-default btn-xs" href="{{ url_for('comment.moderate_enable', _id=comment.id, page=page, next=next) }}">允许</a>
                     {% else %}
-                        <a class="btn btn-danger btn-xs" href="{{ url_for('comment.moderate_disable', _id=comment.id, page=page, next=next) }}">禁止</a>
+                        <a class="btn btn-danger btn-xs" href="{{ url_for('comment.moderate_disable', _id=comment.id, page=page, next=next) }}">屏蔽</a>
                     {% endif %}
                 {% endif %}
             </div>

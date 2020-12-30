@@ -17,6 +17,7 @@
                     <li><a href="{{ url_for('admin.category_index') }}">文章分类</a></li>
                     <li><a href="{{ url_for('admin.user_index') }}">用户管理</a></li>
                     <li><a href="{{ url_for('admin.comment_index') }}">评论管理</a></li>
+                    <li><a href="{{ url_for('admin.message_index') }}">站内信管理</a></li>
                 </ul>
             {% endblock %}
         </div>
@@ -50,7 +51,7 @@
                                     <td><a href="{{ url_for('blog.detail', _id=post.id) }}">{{ post.title | truncate(10) }}</a></td>
                                     <td>{{ post.content | truncate(15) }}</td>
                                     <td>{{ post.author.username }}</td>
-                                    <td><a href="{{ url_for('admin.blog_by_category_index', _id=post.category.id) }}">{{ post.category.name }}</a></td>
+                                    <td><a href="{{ url_for('admin.blog_by_category_index', name=post.category.name) }}">{{ post.category.name }}</a></td>
                                     <td><a href="{{ url_for('admin.comment_by_blog_index', _id=post.id) }}">{{ post.comments.count() }}</a></td>
                                     <td>
                                         <a href="{{ url_for('blog.edit', _id=post.id, next=next) }}" class="btn btn-warning btn-xs" role="button">编辑</a>

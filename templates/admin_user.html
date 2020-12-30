@@ -6,6 +6,7 @@
         <li><a href="{{ url_for('admin.category_index') }}">文章分类</a></li>
         <li class="active"><a href="{{ url_for('admin.user_index') }}">用户管理<span class="sr-only">(current)</span></a></li>
         <li><a href="{{ url_for('admin.comment_index') }}">评论管理</a></li>
+        <li><a href="{{ url_for('admin.message_index') }}">站内信管理</a></li>
     </ul>
 {% endblock %}
 
@@ -31,8 +32,8 @@
                         <td><a href="{{ url_for('user.profile', username=user.username) }}">{{ user.username }}</a></td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.confirmed }}</td>
-                        <td><a href="{{ url_for('admin.user_by_role_index', _id=user.role.id) }}">{{ user.role.name }}</a></td>
-                        <td><a href="{{ url_for('admin.comment_by_user_index', _id=user.id) }}">{{ user.comments.count() }}</a></td>
+                        <td><a href="{{ url_for('admin.user_by_role_index', name=user.role.name) }}">{{ user.role.name }}</a></td>
+                        <td><a href="{{ url_for('admin.comment_by_user_index', username=user.username) }}">{{ user.comments.count() }}</a></td>
                         <td>
                             <a href="{{ url_for('user.edit_profile_admin', _id=user.id, next=next) }}" class="btn btn-warning btn-xs" role="button">编辑</a>
                             {% if not user.is_administrator() %}
@@ -72,7 +73,7 @@
     {% if pagination and pagination.pages > 1 %}
         <div class="pagination">
             {% if endpoint %}
-                {{ macros.pagination_widget(pagination, endpoint, _id=_id) }}
+                {{ macros.pagination_widget(pagination, endpoint, name=name) }}
             {% else %}
                 {{ macros.pagination_widget(pagination, 'admin.user_index') }}
             {% endif %}

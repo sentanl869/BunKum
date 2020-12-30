@@ -15,9 +15,9 @@ from models.blog import Blog
 from models.role import Role
 from models.category import Category
 from models.comment import Comment
+from models.message import Message
 from models.forms import EditCategoryForm, EditCommentForm
 from routes import admin_required
-
 
 
 main = Blueprint('admin', __name__, url_prefix='/admin')
@@ -199,11 +199,11 @@ def comment_edit(_id: int) -> bytes:
         abort(404)
     form = EditCommentForm()
     if form.validate_on_submit():
-        Comment.update(
-            comment,
-            content=form.content.data,
-            disabled=form.disabled.data
-        )
+        form_dict = {
+            'content': form.content.data,
+            'disabled': form.disabled.data
+        }
+        Comment.edit(form_dict, comment)
         target_url: str = request.args.get('next')
         if target_url is None or not target_url.startswith('/'):
             target_url = url_for('admin.comment_index')
@@ -258,11 +258,11 @@ def comment_by_blog_index(_id: int) -> bytes:
     )
 
 
-@main.route('/comment/user/<int:_id>')
+@main.route('/comment/user/<username>')
 @login_required
 @admin_required
-def comment_by_user_index(_id: int) -> bytes:
-    user = User.one(id=_id)
+def comment_by_user_index(username: str) -> bytes:
+    user = User.one(username=username)
     if user is None:
         abort(404)
     page = request.args.get('page', 1, type=int)
@@ -274,19 +274,19 @@ def comment_by_user_index(_id: int) -> bytes:
     comments = pagination.items
     return render_template(
         'admin_comment.html',
-        _id=_id,
-        endpoint='admin.comment_by_user_index',
+        username=username,
+        endpoint_by_user='admin.comment_by_user_index',
         comments=comments,
         pagination=pagination,
         next=request.full_path
     )
 
 
-@main.route('/blog/category/<int:_id>')
+@main.route('/blog/category/<name>')
 @login_required
 @admin_required
-def blog_by_category_index(_id: int) -> bytes:
-    category = Category.one(id=_id)
+def blog_by_category_index(name: str) -> bytes:
+    category = Category.one(name=name)
     if category is None:
         abort(404)
     page = request.args.get('page', 1, type=int)
@@ -298,7 +298,7 @@ def blog_by_category_index(_id: int) -> bytes:
     posts = pagination.items
     return render_template(
         'admin_index.html',
-        _id=_id,
+        name=name,
         endpoint='admin.blog_by_category_index',
         posts=posts,
         pagination=pagination,
@@ -306,11 +306,11 @@ def blog_by_category_index(_id: int) -> bytes:
     )
 
 
-@main.route('/user/role/<int:_id>')
+@main.route('/user/role/<name>')
 @login_required
 @admin_required
-def user_by_role_index(_id: int) -> bytes:
-    role = Role.one(id=_id)
+def user_by_role_index(name: str) -> bytes:
+    role = Role.one(name=name)
     if role is None:
         abort(404)
     page = request.args.get('page', 1, type=int)
@@ -322,7 +322,7 @@ def user_by_role_index(_id: int) -> bytes:
     users = pagination.items
     return render_template(
         'admin_user.html',
-        _id=_id,
+        name=name,
         endpoint='admin.user_by_role_index',
         users=users,
         pagination=pagination,
@@ -365,6 +365,73 @@ def comment_by_disabled_index() -> bytes:
     return render_template(
         'admin_comment.html',
         comments=comments,
+        pagination=pagination,
+        next=request.full_path
+    )
+
+
+@main.route('/message')
+@login_required
+@admin_required
+def message_index() -> bytes:
+    page = request.args.get('page', 1, type=int)
+    pagination = Message.page(
+        page,
+        current_app.config['ADMIN_PER_PAGE'],
+        Message.id.desc()
+    )
+    messages = pagination.items
+    return render_template(
+        'admin_message.html',
+        messages=messages,
+        pagination=pagination,
+        next=request.full_path
+    )
+
+
+@main.route('/message/send/by/<username>')
+@login_required
+@admin_required
+def message_send_by(username: str) -> bytes:
+    user = User.one(username=username)
+    if user is None:
+        abort(404)
+    page = request.args.get('page', 1, type=int)
+    pagination = user.messages_sent_page(
+        page,
+        current_app.config['ADMIN_PER_PAGE'],
+        Message.id.desc()
+    )
+    messages = pagination.items
+    return render_template(
+        'admin_message.html',
+        username=username,
+        endpoint='admin.message_send_by',
+        messages=messages,
+        pagination=pagination,
+        next=request.full_path
+    )
+
+
+@main.route('/message/send/for/<username>')
+@login_required
+@admin_required
+def message_send_for(username: str) -> bytes:
+    user = User.one(username=username)
+    if user is None:
+        abort(404)
+    page = request.args.get('page', 1, type=int)
+    pagination = user.messages_received_page(
+        page,
+        current_app.config['ADMIN_PER_PAGE'],
+        Message.id.desc()
+    )
+    messages = pagination.items
+    return render_template(
+        'admin_message.html',
+        username=username,
+        endpoint='admin.message_send_for',
+        messages=messages,
         pagination=pagination,
         next=request.full_path
     )

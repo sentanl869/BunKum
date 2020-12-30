@@ -116,7 +116,7 @@ def detail(_id: int) -> bytes:
     comments = pagination.items
     categories = Category.order(Category.id)
     return render_template(
-        'blog_detail.html',
+        'detail_blog.html',
         post=blog,
         form=form,
         comments=comments,
