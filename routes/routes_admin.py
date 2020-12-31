@@ -16,7 +16,7 @@ from models.role import Role
 from models.category import Category
 from models.comment import Comment
 from models.message import Message
-from models.forms import EditCategoryForm, EditCommentForm, MessageForm
+from models.forms import EditCategoryForm, EditCommentForm, EditMessageForm
 from routes import admin_required
 
 
@@ -446,10 +446,12 @@ def message_edit(_id: int) -> bytes:
     message = Message.one(id=_id)
     if message is None:
         abort(404)
-    form = MessageForm()
+    form = EditMessageForm()
     if form.validate_on_submit():
         form_dict = {
-            'content': form.content.data
+            'content': form.content.data,
+            'author_delete': form.author_delete.data,
+            'receiver_delete': form.receiver_delete.data
         }
         Message.edit(form_dict, message)
         target_url: str = request.args.get('next')
@@ -458,6 +460,8 @@ def message_edit(_id: int) -> bytes:
         flash('站内信修改成功。')
         return redirect(target_url)
     form.content.data = message.content
+    form.author_delete.data = message.author_delete
+    form.receiver_delete.data = message.receiver_delete
     return render_template('edit_message.html', form=form)
 
 

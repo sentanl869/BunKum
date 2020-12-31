@@ -26,12 +26,17 @@ class Message(BaseModel, db.Model):
 
     @classmethod
     def edit(cls, form: dict, message) -> None:
-        content_html = safe_markdown(form['content'])
-        cls.update(
-            message,
-            content=form['content'],
-            content_html=content_html
-        )
+        if form.get('author_delete') and form.get('receiver_delete'):
+            message.remove()
+        else:
+            content_html = safe_markdown(form['content'])
+            cls.update(
+                message,
+                content=form['content'],
+                content_html=content_html,
+                author_delete=form['author_delete'],
+                receiver_delete=form['receiver_delete']
+            )
 
     def unilateral_delete(self, form: dict) -> None:
         if form.get('author_delete'):

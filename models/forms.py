@@ -263,3 +263,14 @@ class MessageForm(FlaskForm):
         render_kw={'rows': 10}
     )
     submit = SubmitField('发送')
+
+
+class EditMessageForm(FlaskForm):
+    content = PageDownField(
+        '',
+        validators=[DataRequired()],
+        render_kw={'rows': 10}
+    )
+    author_delete = BooleanField('发送方删除')
+    receiver_delete = BooleanField('接收方删除')
+    submit = SubmitField('应用更改')
