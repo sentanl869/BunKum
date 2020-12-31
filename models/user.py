@@ -72,13 +72,13 @@ class User(BaseModel, db.Model, UserMixin):
         return ms
 
     def messages_received_page(self, page: int, per_page: int, *args):
-        ms = self.messages_received.order_by(*args).paginate(
+        ms = self.messages_received.filter_by(receiver_delete=False).order_by(*args).paginate(
             page, per_page=per_page, error_out=False
         )
         return ms
 
     def messages_sent_page(self, page: int, per_page: int, *args):
-        ms = self.messages_sent.order_by(*args).paginate(
+        ms = self.messages_sent.filter_by(author_delete=False).order_by(*args).paginate(
             page, per_page=per_page, error_out=False
         )
         return ms

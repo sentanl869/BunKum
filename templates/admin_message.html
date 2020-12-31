@@ -20,6 +20,8 @@
                     <th>消息内容</th>
                     <th>发送者</th>
                     <th>接收者</th>
+                    <th><a href="{{ url_for('admin.message_by_sender_deleted_index') }}">发送删除</a></th>
+                    <th><a href="{{ url_for('admin.message_by_receiver_deleted_index') }}">接收删除</a></th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -30,8 +32,10 @@
                         <td>{{ message.content | truncate(15) }}</td>
                         <td><a href="{{ url_for('admin.message_send_by', username=message.author.username) }}">{{ message.author.username }}</a></td>
                         <td><a href="{{ url_for('admin.message_send_for', username=message.receiver.username) }}">{{ message.receiver.username }}</a></td>
+                        <td>{{ message.author_delete }}</td>
+                        <td>{{ message.receiver_delete }}</td>
                         <td>
-                            <a href="" class="btn btn-warning btn-xs" role="button">编辑</a>
+                            <a href="{{ url_for('admin.message_edit', _id=message.id, next=next) }}" class="btn btn-warning btn-xs" role="button">编辑</a>
                             <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ message.id }}">删除</button>
                             <div class="modal fade bs-delete-modal-sm-{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
@@ -45,7 +49,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                            <form class="blog-delete" action="" method="post">
+                                            <form class="blog-delete" action="{{ url_for('admin.message_delete') }}" method="post">
                                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                                 <input type="hidden" name="_id" value="{{ message.id }}">
                                                 <input type="hidden" name="next" value="{{ next }}">
@@ -68,6 +72,10 @@
         <div class="pagination">
             {% if endpoint %}
                 {{ macros.pagination_widget(pagination, endpoint, username=username) }}
+            {% elif endpoint_by_sender_delete %}
+                {{ macros.pagination_widget(pagination, endpoint_by_sender_delete) }}
+            {% elif endpoint_by_receiver_delete %}
+                {{ macros.pagination_widget(pagination, endpoint_by_receiver_delete) }}
             {% else %}
                 {{ macros.pagination_widget(pagination, 'admin.message_index') }}
             {% endif %}

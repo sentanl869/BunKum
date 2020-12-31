@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, Integer, ForeignKey
+from sqlalchemy import Column, Text, Integer, Boolean, ForeignKey
 
 from models import BaseModel
 from models.helper import db, safe_markdown
@@ -9,6 +9,8 @@ class Message(BaseModel, db.Model):
     __table_args__ = {'mysql_engine': 'InnoDB'}
     content = Column(Text, nullable=False)
     content_html = Column(Text)
+    author_delete = Column(Boolean, default=False)
+    receiver_delete = Column(Boolean, default=False)
     sender_id = Column(Integer, ForeignKey('users.id'))
     receiver_id = Column(Integer, ForeignKey('users.id'))
 
@@ -21,6 +23,24 @@ class Message(BaseModel, db.Model):
             author=author,
             receiver=receiver
         )
+
+    @classmethod
+    def edit(cls, form: dict, message) -> None:
+        content_html = safe_markdown(form['content'])
+        cls.update(
+            message,
+            content=form['content'],
+            content_html=content_html
+        )
+
+    def unilateral_delete(self, form: dict) -> None:
+        if form.get('author_delete'):
+            self.author_delete = True
+        elif form.get('receiver_delete'):
+            self.receiver_delete = True
+        self.save()
+        if self.author_delete and self.receiver_delete:
+            self.remove()
 
     @classmethod
     def unread_message_count(cls, *args, **kwargs) -> int:

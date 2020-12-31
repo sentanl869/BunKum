@@ -74,6 +74,8 @@
         <div class="pagination">
             {% if endpoint %}
                 {{ macros.pagination_widget(pagination, endpoint, name=name) }}
+            {% elif endpoint_by_unconfirmed %}
+                {{ macros.pagination_widget(pagination, endpoint_by_unconfirmed) }}
             {% else %}
                 {{ macros.pagination_widget(pagination, 'admin.user_index') }}
             {% endif %}

@@ -16,7 +16,7 @@ from models.role import Role
 from models.category import Category
 from models.comment import Comment
 from models.message import Message
-from models.forms import EditCategoryForm, EditCommentForm
+from models.forms import EditCategoryForm, EditCommentForm, MessageForm
 from routes import admin_required
 
 
@@ -344,6 +344,7 @@ def user_by_unconfirmed_index() -> bytes:
     users = pagination.items
     return render_template(
         'admin_user.html',
+        endpoint_by_unconfirmed='admin.user_by_unconfirmed_index',
         users=users,
         pagination=pagination,
         next=request.full_path
@@ -364,6 +365,7 @@ def comment_by_disabled_index() -> bytes:
     comments = pagination.items
     return render_template(
         'admin_comment.html',
+        endpoint_by_disabled='admin.comment_by_disabled_index',
         comments=comments,
         pagination=pagination,
         next=request.full_path
@@ -431,6 +433,86 @@ def message_send_for(username: str) -> bytes:
         'admin_message.html',
         username=username,
         endpoint='admin.message_send_for',
+        messages=messages,
+        pagination=pagination,
+        next=request.full_path
+    )
+
+
+@main.route('/message/edit/<int:_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def message_edit(_id: int) -> bytes:
+    message = Message.one(id=_id)
+    if message is None:
+        abort(404)
+    form = MessageForm()
+    if form.validate_on_submit():
+        form_dict = {
+            'content': form.content.data
+        }
+        Message.edit(form_dict, message)
+        target_url: str = request.args.get('next')
+        if target_url is None or not target_url.startswith('/'):
+            target_url = url_for('admin.message_index')
+        flash('站内信修改成功。')
+        return redirect(target_url)
+    form.content.data = message.content
+    return render_template('edit_message.html', form=form)
+
+
+@main.route('/message/delete', methods=['POST'])
+@login_required
+@admin_required
+def message_delete() -> bytes:
+    form = request.form
+    message = Message.one(id=form['_id'])
+    if message is None:
+        abort(404)
+    message.remove()
+    target_url: str = form['next']
+    if target_url is None or not target_url.startswith('/'):
+        target_url = url_for('admin.message_index')
+    flash('站内信删除成功。')
+    return redirect(target_url)
+
+
+@main.route('/message/sender/deleted')
+@login_required
+@admin_required
+def message_by_sender_deleted_index() -> bytes:
+    page = request.args.get('page', 1, type=int)
+    pagination = Message.filter_page(
+        page,
+        current_app.config['ADMIN_PER_PAGE'],
+        Message.id.desc(),
+        author_delete=True
+    )
+    messages = pagination.items
+    return render_template(
+        'admin_message.html',
+        endpoint_by_sender_delete='admin.message_by_sender_deleted_index',
+        messages=messages,
+        pagination=pagination,
+        next=request.full_path
+    )
+
+
+@main.route('/message/receiver/deleted')
+@login_required
+@admin_required
+def message_by_receiver_deleted_index() -> bytes:
+    page = request.args.get('page', 1, type=int)
+    pagination = Message.filter_page(
+        page,
+        current_app.config['ADMIN_PER_PAGE'],
+        Message.id.desc(),
+        receiver_delete=True
+    )
+    messages = pagination.items
+    return render_template(
+        'admin_message.html',
+        endpoint_by_receiver_delete='admin.message_by_receiver_deleted_index',
         messages=messages,
         pagination=pagination,
         next=request.full_path

@@ -6,6 +6,7 @@ from flask import (
     flash,
     redirect,
     url_for,
+    abort,
 )
 from flask_login import login_required, current_user
 
@@ -71,3 +72,18 @@ def new(username: str) -> bytes:
         flash('您的消息发送成功！')
         return redirect(url_for('message.outbox_index'))
     return render_template('new_message.html', form=form)
+
+
+@main.route('/delete', methods=['POST'])
+@login_required
+def delete() -> bytes:
+    form = request.form
+    message = Message.one(id=form['_id'])
+    if message is None:
+        abort(404)
+    message.unilateral_delete(form)
+    flash('消息删除成功！')
+    target_url: str = form['next']
+    if target_url is None or not target_url.startswith('/'):
+        target_url = url_for('message.inbox_index')
+    return redirect(target_url)

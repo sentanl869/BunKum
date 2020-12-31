@@ -72,6 +72,8 @@
                 {{ macros.pagination_widget(pagination, endpoint, _id=_id) }}
             {% elif endpoint_by_user %}
                 {{ macros.pagination_widget(pagination, endpoint_by_user, username=username) }}
+            {% elif endpoint_by_disabled %}
+                {{ macros.pagination_widget(pagination, endpoint_by_disabled) }}
             {% else %}
                 {{ macros.pagination_widget(pagination, 'admin.comment_index') }}
             {% endif %}

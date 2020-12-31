@@ -89,7 +89,7 @@
                 {% if pagination and pagination.pages > 1 %}
                     <div class="pagination">
                         {% if endpoint %}
-                            {{ macros.pagination_widget(pagination, endpoint, _id=_id) }}
+                            {{ macros.pagination_widget(pagination, endpoint, name=name) }}
                         {% else %}
                             {{ macros.pagination_widget(pagination, 'admin.blog_index') }}
                         {% endif %}
