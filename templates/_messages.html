@@ -8,7 +8,7 @@
             </div>
             <div class="message-content">
                 <div class="message-date">
-                    {% if current_user == message.receiver %}
+                    {% if current_user == message.receiver and inbox_index %}
                         <a href="{{ url_for('message.new', username=message.author.username) }}" class="btn btn-default btn-xs" role="button">回复</a>
                         <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ message.id }}">删除</button>
                         <div class="modal fade bs-delete-modal-sm-{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -34,7 +34,7 @@
                                 </div><!-- /.modal-content -->
                             </div>
                         </div>
-                    {% elif current_user == message.author %}
+                    {% elif current_user == message.author and outbox_index %}
                         <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ message.id }}">删除</button>
                         <div class="modal fade bs-delete-modal-sm-{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
                             <div class="modal-dialog modal-sm" role="document">

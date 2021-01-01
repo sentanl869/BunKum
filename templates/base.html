@@ -42,7 +42,7 @@
                         <li><a href="{{ url_for('blog.new') }}">发布新博客</a></li>
                     {% endif %}
                     {% if current_user.can(Permission.MODERATE) %}
-                        <li><a href="{{ url_for('comment.moderate') }}">管理评论</a></li>
+                        <li><a href="{{ url_for('comment.moderate') }}">评论管理</a></li>
                     {% endif %}
                     {% if current_user.is_authenticated %}
                         <li>
