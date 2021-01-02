@@ -39,8 +39,8 @@ def reset_avatar() -> None:
     )
     if os.path.exists(avatar_folder_path):
         shutil.rmtree(avatar_folder_path)
-        os.mkdir(avatar_folder_path)
-        shutil.copy(source_file_path, avatar_folder_path)
+    os.mkdir(avatar_folder_path)
+    shutil.copy(source_file_path, avatar_folder_path)
 
 
 if __name__ == '__main__':

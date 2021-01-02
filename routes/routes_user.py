@@ -214,13 +214,13 @@ def change_avatar(username: str) -> bytes:
     form = ChangeAvatarForm()
     if form.validate_on_submit():
         avatar_file = form.avatar.data
-        avatar_url = current_user.avatar_save(avatar_file)
+        avatar_url = user.avatar_save(avatar_file)
         User.update(
             user,
             avatar_url=avatar_url
         )
-        flash('个人头像已经更新。')
-        return redirect(url_for('user.profile', username=current_user.username))
+        flash('用户头像已经更新。')
+        return redirect(url_for('user.profile', username=user.username))
     return render_template('change_avatar.html', form=form)
 
 
