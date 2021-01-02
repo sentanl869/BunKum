@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, Integer, Boolean, ForeignKey
+from sqlalchemy import Column, String, Text, Integer, Boolean, ForeignKey
 
 from models import BaseModel
 from models.helper import db, safe_markdown
@@ -11,6 +11,8 @@ class Message(BaseModel, db.Model):
     content_html = Column(Text)
     author_delete = Column(Boolean, default=False)
     receiver_delete = Column(Boolean, default=False)
+    notification = Column(Boolean, default=False)
+    bolg_id = Column(Integer, ForeignKey('blogs.id'))
     sender_id = Column(Integer, ForeignKey('users.id'))
     receiver_id = Column(Integer, ForeignKey('users.id'))
 
@@ -46,6 +48,20 @@ class Message(BaseModel, db.Model):
         self.save()
         if self.author_delete and self.receiver_delete:
             self.remove()
+
+    @classmethod
+    def auto_notification(cls, content: str, author, receivers: list, blog) -> None:
+        for receiver in receivers:
+            content_html = safe_markdown(content)
+            cls.new(
+                notification=True,
+                author_delete=True,
+                content=content,
+                content_html=content_html,
+                author=author,
+                receiver=receiver,
+                blog=blog
+            )
 
     @classmethod
     def unread_message_count(cls, *args, **kwargs) -> int:

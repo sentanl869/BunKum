@@ -65,31 +65,6 @@ class User(BaseModel, db.Model, UserMixin):
         user.save()
         return user
 
-    def comments_page(self, page: int, per_page: int, *args):
-        ms = self.comments.order_by(*args).paginate(
-            page, per_page=per_page, error_out=False
-        )
-        return ms
-
-    def messages_received_page(self, page: int, per_page: int, *args):
-        ms = self.messages_received.filter_by(receiver_delete=False).order_by(*args).paginate(
-            page, per_page=per_page, error_out=False
-        )
-        return ms
-
-    def messages_sent_page(self, page: int, per_page: int, *args):
-        ms = self.messages_sent.filter_by(author_delete=False).order_by(*args).paginate(
-            page, per_page=per_page, error_out=False
-        )
-        return ms
-
-    def unread_message_count(self) -> int:
-        ms = Message.unread_message_count(
-            Message.created_time > self.last_message_read_time,
-            receiver=self
-        )
-        return ms
-
     @property
     def password(self) -> Exception:
         raise AttributeError('password is not readable attribute')
@@ -115,16 +90,19 @@ class User(BaseModel, db.Model, UserMixin):
         self.last_message_read_time = datetime.utcnow()
         self.save()
 
-    def avatar_save(self, avatar_file) -> str:
-        old_filename = self.avatar_url.split(os.sep)[-1]
-        old_avatar_path = os.path.join(
+    def avatar_delete(self) -> None:
+        filename = self.avatar_url.split(os.sep)[-1]
+        avatar_path = os.path.join(
             current_app.config['AVATARS_ABSOLUTE_PATH'],
-            old_filename
+            filename
         )
-        if os.path.exists(old_avatar_path) \
-                and old_filename != \
+        if os.path.exists(avatar_path) \
+                and filename != \
                 current_app.config['DEFAULT_AVATAR_FILE_NAME']:
-            os.remove(old_avatar_path)
+            os.remove(avatar_path)
+
+    def avatar_save(self, avatar_file) -> str:
+        self.avatar_delete()
         suffix = avatar_file.filename.split('.')[-1]
         filename = f'{str(uuid4())}.{suffix}'
         avatar_path = os.path.join(
@@ -197,6 +175,39 @@ class User(BaseModel, db.Model, UserMixin):
         user.password = new_password
         user.save()
         return True
+
+    def delete_with_all(self) -> None:
+        comments = self.comments
+        if comments:
+            for comment in comments:
+                comment.remove()
+        self.avatar_delete()
+        self.remove()
+
+    def comments_page(self, page: int, per_page: int, *args):
+        ms = self.comments.order_by(*args).paginate(
+            page, per_page=per_page, error_out=False
+        )
+        return ms
+
+    def messages_received_page(self, page: int, per_page: int, *args):
+        ms = self.messages_received.filter_by(receiver_delete=False).order_by(*args).paginate(
+            page, per_page=per_page, error_out=False
+        )
+        return ms
+
+    def messages_sent_page(self, page: int, per_page: int, *args):
+        ms = self.messages_sent.filter_by(author_delete=False).order_by(*args).paginate(
+            page, per_page=per_page, error_out=False
+        )
+        return ms
+
+    def unread_message_count(self) -> int:
+        ms = Message.unread_message_count(
+            Message.created_time > self.last_message_read_time,
+            receiver=self
+        )
+        return ms
 
 
 @login_manager.user_loader

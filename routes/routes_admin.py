@@ -51,10 +51,7 @@ def blog_delete() -> bytes:
     blog = Blog.one(id=form['_id'])
     if blog is None:
         abort(404)
-    comments = blog.comments
-    for comment in comments:
-        comment.remove()
-    blog.remove()
+    blog.delete_with_comments()
     target_url: str = form['next']
     if target_url is None or not target_url.startswith('/'):
         target_url = url_for('admin.index', page=page)
@@ -117,12 +114,7 @@ def category_delete() -> bytes:
         abort(404)
     if category.default:
         abort(405)
-    posts = category.posts
-    if posts:
-        for post in posts:
-            post.category = Category.one(default=True)
-            post.save()
-    category.remove()
+    category.delete_with_posts()
     target_url: str = form['next']
     if target_url is None or not target_url.startswith('/'):
         target_url = url_for('admin.category_index')
@@ -159,11 +151,7 @@ def user_delete() -> bytes:
         abort(404)
     if user.is_administrator():
         abort(405)
-    comments = user.comments
-    if comments:
-        for comment in comments:
-            comment.remove()
-    user.remove()
+    user.delete_with_all()
     target_url: str = form['next']
     if target_url is None or not target_url.startswith('/'):
         target_url = url_for('admin.user_index')

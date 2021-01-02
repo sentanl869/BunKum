@@ -15,6 +15,7 @@ class Blog(BaseModel, db.Model):
     user_id = Column(Integer, ForeignKey('users.id'))
     category_id = Column(Integer, ForeignKey('categories.id'))
     comments = relationship('Comment', backref='blog', lazy='dynamic')
+    notifications = relationship('Message', backref='blog', lazy='dynamic')
 
     @classmethod
     def add(cls, form: dict, user: User) -> None:

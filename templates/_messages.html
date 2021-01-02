@@ -8,7 +8,7 @@
             </div>
             <div class="message-content">
                 <div class="message-date">
-                    {% if current_user == message.receiver and inbox_index %}
+                    {% if current_user == message.receiver and inbox_index and not message.notification %}
                         <a href="{{ url_for('message.new', username=message.author.username) }}" class="btn btn-default btn-xs" role="button">回复</a>
                         <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ message.id }}">删除</button>
                         <div class="modal fade bs-delete-modal-sm-{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -34,7 +34,32 @@
                                 </div><!-- /.modal-content -->
                             </div>
                         </div>
-                    {% elif current_user == message.author and outbox_index %}
+                    {% elif current_user == message.receiver and inbox_index and message.notification %}
+                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ message.id }}">删除</button>
+                        <div class="modal fade bs-delete-modal-sm-{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                            <div class="modal-dialog modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">警告！</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>请确认，是否删除该条消息？</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <form class="blog-delete" action="{{ url_for('message.delete') }}" method="post">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                            <input type="hidden" name="_id" value="{{ message.id }}">
+                                            <input type="hidden" name="receiver_delete" value="True">
+                                            <input type="hidden" name="next" value="{{ next }}">
+                                            <button type="submit" class="btn btn-danger">删除</button>
+                                        </form>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div>
+                        </div>
+                    {% elif current_user == message.author and outbox_index and not message.notification %}
                         <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ message.id }}">删除</button>
                         <div class="modal fade bs-delete-modal-sm-{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
                             <div class="modal-dialog modal-sm" role="document">
@@ -63,13 +88,24 @@
                     {{ moment(message.created_time).fromNow() }}
                 </div>
                 <div class="message-author">
-                    <a href="{{ url_for('user.profile', username=message.author.username) }}">
-                        {{ message.author.username }}
-                    </a>
-                    <span>&nbsp;发送给&nbsp;</span>
-                    <a href="{{ url_for('user.profile', username=message.receiver.username) }}">
-                        {{ message.receiver.username }}
-                    </a>
+                    {% if message.notification %}
+                        <a href="{{ url_for('user.profile', username=message.author.username) }}">
+                            {{ message.author.username }}
+                        </a>
+                        <span>&nbsp;在博客&nbsp;</span>
+                        <a href="{{ url_for('blog.detail', _id=message.blog.id) }}">
+                            {{ message.blog.title | truncate(15) }}
+                        </a>
+                        <span>&nbsp;中@了您&nbsp;</span>
+                    {% else %}
+                        <a href="{{ url_for('user.profile', username=message.author.username) }}">
+                            {{ message.author.username }}
+                        </a>
+                        <span>&nbsp;发送给&nbsp;</span>
+                        <a href="{{ url_for('user.profile', username=message.receiver.username) }}">
+                            {{ message.receiver.username }}
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="message-body">
                     {{ message.content_html | safe }}

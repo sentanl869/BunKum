@@ -10,7 +10,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from routes import current_user_object, admin_required
+from routes import current_user_object, admin_required, content_at_processing
 from models.blog import Blog
 from models.comment import Comment
 from models.category import Category
@@ -98,8 +98,9 @@ def detail(_id: int) -> bytes:
     form = CommentForm()
     if form.validate_on_submit():
         user = current_user_object(current_user.id)
+        content = content_at_processing(form.content.data, blog)
         form_dict = {
-            'content': form.content.data,
+            'content': content,
         }
         Comment.add(form_dict, user, blog)
         flash('您的评论发布成功！')

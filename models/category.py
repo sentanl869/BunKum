@@ -30,3 +30,11 @@ class Category(BaseModel, db.Model):
             page, per_page=per_page, error_out=False
         )
         return ms
+
+    def delete_with_posts(self) -> None:
+        posts = self.posts
+        if posts:
+            for post in posts:
+                post.category = Category.one(default=True)
+                post.save()
+        self.remove()

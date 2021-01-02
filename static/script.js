@@ -21,7 +21,6 @@ let getCommentAuthorName = function () {
         result.push(value);
     }
     return result;
-
 };
 
 let __main = function () {
