@@ -31,7 +31,7 @@
                         <td>{{ comment.content | truncate(15) }}</td>
                         <td>{{ comment.disabled }}</td>
                         <td><a href="{{ url_for('admin.comment_by_user_index', username=comment.author.username) }}">{{ comment.author.username }}</a></td>
-                        <td><a href="{{ url_for('blog.detail', _id=comment.blog.id) }}">{{ comment.blog.title | truncate(10) }}</a></td>
+                        <td><a href="{{ url_for('admin.comment_by_blog_index', _id=comment.blog.id) }}">{{ comment.blog.title | truncate(10) }}</a></td>
                         <td>
                             <a href="{{ url_for('admin.comment_edit', _id=comment.id, next=next) }}" class="btn btn-warning btn-xs" role="button">编辑</a>
                             <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".bs-delete-modal-sm-{{ comment.id }}">删除</button>
