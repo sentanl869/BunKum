@@ -1,7 +1,7 @@
-from sqlalchemy import Column, String, Text, Integer, Boolean, ForeignKey
+from sqlalchemy import Column, Text, Integer, Boolean, ForeignKey
 
 from models import BaseModel
-from models.helper import db, safe_markdown
+from models.extensions import db, safe_markdown
 
 
 class Message(BaseModel, db.Model):

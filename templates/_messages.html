@@ -96,7 +96,7 @@
                         <a href="{{ url_for('blog.detail', _id=message.blog.id) }}">
                             {{ message.blog.title | truncate(15) }}
                         </a>
-                        <span>&nbsp;中@了您&nbsp;</span>
+                        <span>&nbsp;的评论中@了您&nbsp;</span>
                     {% else %}
                         <a href="{{ url_for('user.profile', username=message.author.username) }}">
                             {{ message.author.username }}

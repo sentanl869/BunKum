@@ -11,7 +11,7 @@ ufw default allow outgoing
 ufw status verbose
 ufw -f enable
 
-apt-get install -y supervisor nginx python3-pip mysql-server
+apt-get install -y supervisor nginx python3-pip mysql-server redis-server
 
 mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
 mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
@@ -25,6 +25,7 @@ rm -f /etc/nginx/sites-enabled/default
 rm -f /etc/nginx/sites-available/default
 
 cp /var/www/blog/misc/blog.conf /etc/supervisor/conf.d/blog.conf
+cp /var/www/blog/misc/celery.conf /etc/supervisor/conf.d/celery.conf
 cp /var/www/blog/misc/blog.nginx /etc/nginx/sites-enabled/blog
 
 chmod -R o+rwx /var/www/blog
@@ -34,7 +35,7 @@ pip3 install gunicorn gevent psutil
 pip3 install -r requirements.txt
 service mysql restart
 python3 reset_app.py
-export FLASK_APP=run.py
+export FLASK_APP=service.py
 flask deploy
 
 service supervisor restart

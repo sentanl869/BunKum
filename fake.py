@@ -5,7 +5,7 @@ from random import randint
 from sqlalchemy.exc import IntegrityError
 from faker import Factory
 
-from models.helper import db
+from models.extensions import db
 from models.user import User
 from models.blog import Blog
 from models.comment import Comment

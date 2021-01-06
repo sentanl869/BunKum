@@ -1,8 +1,8 @@
 from flask import Flask
 
 from config import config
-from models.helper import (
-    db, login_manager, bootstrap, moment, mail, pagedown, csrf
+from models.extensions import (
+    db, login_manager, bootstrap, moment, pagedown, csrf
 )
 from routes.routes_blog import main as blog_route
 from routes.routes_user import main as user_route
@@ -26,7 +26,6 @@ def configured_app(config_name: str) -> Flask:
     login_manager.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
-    mail.init_app(app)
     pagedown.init_app(app)
     csrf.init_app(app)
     if app.config['SSL_REDIRECT']:

@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Boolean
 from sqlalchemy.orm import relationship
 
 from models import BaseModel
-from models.helper import db
+from models.extensions import db
 
 
 class Category(BaseModel, db.Model):

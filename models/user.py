@@ -17,7 +17,7 @@ from flask_login import UserMixin
 from models import BaseModel
 from models.message import Message
 from models.role import Role, Permission
-from models.helper import db, login_manager
+from models.extensions import db, login_manager
 
 
 class User(BaseModel, db.Model, UserMixin):

@@ -1,8 +1,7 @@
 import os
 
-
 from app import configured_app
-from models.helper import db
+from models.extensions import db
 from models.user import User
 from models.category import Category
 from models.role import Role, Permission
