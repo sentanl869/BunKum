@@ -1,6 +1,6 @@
 from flask_mail import Message
 
-from celery_app import celery
+from celery_worker import celery
 from models.extensions import mail
 
 
