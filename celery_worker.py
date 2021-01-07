@@ -12,7 +12,7 @@ def configured_flask_app(config_name: str) -> Flask:
     return app
 
 
-def configured_celery():
+def configured_celery() -> Celery:
     flask_app = configured_flask_app('celery')
     celery_app = Celery('tasks')
     celery_app.conf.update(flask_app.config)
