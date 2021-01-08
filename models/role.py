@@ -6,8 +6,8 @@ from models.extensions import db
 
 
 class Permission:
-    FOLLOW = 1
-    COMMENT = 2
+    COMMENT = 1
+    DELETE = 2
     WRITE = 4
     MODERATE = 8
     ADMIN = 16
@@ -30,18 +30,18 @@ class Role(BaseModel, db.Model):
     def insert_roles():
         roles = {
             'User': [
-                Permission.FOLLOW,
+                Permission.DELETE,
                 Permission.COMMENT,
                 Permission.WRITE
             ],
             'Moderator': [
-                Permission.FOLLOW,
+                Permission.DELETE,
                 Permission.COMMENT,
                 Permission.WRITE,
                 Permission.MODERATE
             ],
             'Administrator': [
-                Permission.FOLLOW,
+                Permission.DELETE,
                 Permission.COMMENT,
                 Permission.WRITE,
                 Permission.MODERATE,

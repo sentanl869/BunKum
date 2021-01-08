@@ -17,7 +17,6 @@ class Config:
     SSL_REDIRECT = False
 
     POSTS_PER_PAGE = 6
-    FOLLOWERS_PER_PAGE = 50
     COMMENTS_PER_PAGE = 15
     ADMIN_PER_PAGE = 20
 
