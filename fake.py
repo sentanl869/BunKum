@@ -108,6 +108,7 @@ def fake_messages(count=100) -> None:
 
 def fake_all() -> None:
     start_time = time()
+    print('Start make fake data, please wait a moment.')
     fake_users()
     fake_categories()
     fake_posts()
