@@ -9,6 +9,7 @@ from flask import (
     abort,
 )
 from flask_login import current_user, login_required
+from flask_sqlalchemy import get_debug_queries
 
 from routes import current_user_object, admin_required, content_at_processing
 from models.blog import Blog
@@ -160,3 +161,16 @@ def sort(name: str) -> bytes:
         pagination=pagination,
         categories=categories
     )
+
+
+@main.after_app_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= current_app.config['SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                f'Slow query: {query.statement}\n'
+                f'Parameters: {query.parameters}\n'
+                f'Duration: {query.duration}s\n'
+                f'Context: {query.context}\n'
+            )
+    return response

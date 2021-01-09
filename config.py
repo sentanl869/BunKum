@@ -13,6 +13,8 @@ class Config:
     ADMIN_ACCOUNT = os.environ.get('ADMIN_ACCOUNT')
     DEFAULT_AVATAR_FILE_NAME = os.environ.get('DEFAULT_AVATAR_FILE_NAME')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_RECORD_QUERIES = True
+    SLOW_DB_QUERY_TIME = 0.5
     BOOTSTRAP_CDN_FORCE_SSL = True
     SSL_REDIRECT = False
 
@@ -115,8 +117,6 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SLOW_DB_QUERY_TIME = 0.5
-    SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
         os.environ.get('db_user'),
         os.environ.get('MYSQL_PASSWORD'),

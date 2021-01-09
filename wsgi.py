@@ -1,4 +1,4 @@
-from app import configured_app
+from service import app
 
 
-application = configured_app('production')
+application = app
