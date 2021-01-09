@@ -11,7 +11,11 @@ from flask import (
 from flask_login import current_user, login_required
 from flask_sqlalchemy import get_debug_queries
 
-from routes import current_user_object, admin_required, content_at_processing
+from routes import (
+    current_user_object,
+    admin_required,
+    content_at_processing,
+)
 from models.blog import Blog
 from models.comment import Comment
 from models.category import Category

@@ -28,10 +28,6 @@ def configured_app(config_name: str) -> Flask:
     moment.init_app(app)
     pagedown.init_app(app)
     csrf.init_app(app)
-    if app.config['SSL_REDIRECT']:
-        from flask_sslify import SSLify
-        sslify = SSLify()
-        sslify.init_app(app)
     register_routes(app)
     config[config_name].init_app(app)
     return app
