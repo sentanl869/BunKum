@@ -4,7 +4,7 @@ server {
     charset utf-8;
 
     location /static {
-        alias /var/www/blog/static;
+        alias /var/www/BunKum/static;
     }
 
     location / {

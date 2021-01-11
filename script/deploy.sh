@@ -18,19 +18,19 @@ mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('loc
 mysql -u root -e "DROP DATABASE IF EXISTS test;"
 mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 
-mysql_password=$(awk -F '[=\r]' 'NR==1 {print $2}' /var/www/blog/.env)
+mysql_password=$(awk -F '[=\r]' 'NR==1 {print $2}' /var/www/BunKum/.env)
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_password';"
 
 rm -f /etc/nginx/sites-enabled/default
 rm -f /etc/nginx/sites-available/default
 
-cp /var/www/blog/misc/blog.conf /etc/supervisor/conf.d/blog.conf
-cp /var/www/blog/misc/celery.conf /etc/supervisor/conf.d/celery.conf
-cp /var/www/blog/misc/blog.nginx /etc/nginx/sites-enabled/blog
+cp /var/www/BunKum/misc/blog.conf /etc/supervisor/conf.d/blog.conf
+cp /var/www/BunKum/misc/celery.conf /etc/supervisor/conf.d/celery.conf
+cp /var/www/BunKum/misc/blog.nginx /etc/nginx/sites-enabled/blog
 
-chmod -R o+rwx /var/www/blog
+chmod -R o+rwx /var/www/BunKum
 
-cd /var/www/blog
+cd /var/www/BunKum
 pip3 install gunicorn gevent psutil
 pip3 install -r requirements.txt
 service mysql restart

@@ -71,7 +71,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "https://mirrors.bfsu.edu.cn/ubuntu-cloud-images/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
   config.vm.box = "ubuntu/bionic"
 
-  config.vm.synced_folder ".", "/var/www/blog"
+  config.vm.synced_folder ".", "/var/www/BunKum"
 
   config.vm.network "forwarded_port", guest: 80, host: 80
 
@@ -83,9 +83,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     sudo su
-    bash /var/www/blog/script/mirror.sh
-    bash /var/www/blog/script/mirror.sh
-    bash /var/www/blog/script/deploy.sh
+    bash /var/www/BunKum/script/mirror.sh
+    bash /var/www/BunKum/script/mirror.sh
+    bash /var/www/BunKum/script/deploy.sh
   SHELL
 
 end
