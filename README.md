@@ -50,15 +50,15 @@
 1. 初始化：  
     克隆仓库代码：  
     ```shell
-    git clone git@github.com:sentanl869/BunKum.git
+    sudo git clone https://github.com/sentanl869/BunKum.git /var/www/BunKum
     ```
     进入项目目录：
     ```shell
-    cd BunKum
+    cd /var/www/BunKum
     ```
     创建环境变量文件：  
     ```shell
-    cp .env.example .env
+    sudo cp .env.example .env
     ```
     配置环境变量：
     ```dotenv
@@ -96,7 +96,7 @@
 2. 初始化：  
     克隆仓库代码：  
     ```shell
-    git clone git@github.com:sentanl869/BunKum.git
+    git clone https://github.com/sentanl869/BunKum.git
     ```
     进入项目目录：
     ```shell
