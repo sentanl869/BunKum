@@ -31,7 +31,7 @@ login_manager.anonymous_user = AnonymousUser
 
 def markdown_covered(content: str) -> str:
     markdown = Markdown(
-        extensions=['fenced_code', 'tables']
+        extensions=['extra', 'fenced_code', 'tables', 'toc']
     )
     markdown_content = markdown.convert(content)
     return markdown_content
