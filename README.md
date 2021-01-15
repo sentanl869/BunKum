@@ -42,7 +42,7 @@
 ***
 ## 使用方法
 ### Ubuntu
-*推荐版本：Ubuntu 18.04*  
+*推荐版本：Ubuntu 18.04 LTS*  
 
 在 `Ubuntu/Linux` 平台下，本项目使用 `Gunicorn` 配合 `Gevent` 网络库作为 Web 服务器，并使用 `Supervisor` 自动管理 `Gunicorn` 和 `Celery` 进程。同时使用 `Nginx` 作为反向代理服务器。  
 
