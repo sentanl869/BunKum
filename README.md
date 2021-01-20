@@ -7,7 +7,7 @@
 ![redis-depend](https://badgen.net/badge/Redis/4.0.9+/cyan)
 ![nginx-depend](https://badgen.net/badge/Nginx/1.14.0+/purple)
 
-一个使用 `Python` 且基于 `Flask` Web 框架开发的 MVC 架构的个人博客系统。
+一个使用 `Python` 且基于 `Flask` Web 框架开发的 `MVC` 架构的个人博客系统。
 ***
 ## 功能介绍
 - 用户系统
@@ -42,11 +42,11 @@
 ***
 ## 使用方法
 ### Ubuntu
-*推荐版本：Ubuntu 18.04 LTS*  
+*推荐版本：`Ubuntu 18.04 LTS`*  
 
 在 `Ubuntu/Linux` 平台下，本项目使用 `Gunicorn` 配合 `Gevent` 网络库作为 Web 服务器，并使用 `Supervisor` 自动管理 `Gunicorn` 和 `Celery` 进程。同时使用 `Nginx` 作为反向代理服务器。  
 
-**注意：** 在 Ubuntu 20.04 LTS 及以上版本的 Ubuntu 仓库中默认不再包含 MySQL 5.7 版本，需要自行手动安装。  
+**注意：** 在 `Ubuntu 20.04 LTS` 及以上版本的 `Ubuntu` 仓库中默认不再包含 `MySQL 5.7` 版本，需要自行手动安装。  
 1. 初始化：  
     克隆仓库代码：  
     ```shell
