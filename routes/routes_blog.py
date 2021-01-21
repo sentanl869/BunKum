@@ -11,15 +11,12 @@ from flask import (
 from flask_login import current_user, login_required
 from flask_sqlalchemy import get_debug_queries
 
-from routes import (
-    current_user_object,
-    admin_required,
-    content_at_processing,
-)
+from routes import admin_required
 from models.blog import Blog
 from models.comment import Comment
 from models.category import Category
 from models.forms import PostForm, CommentForm
+from models.helper import current_user_object, content_at_processing
 
 
 main = Blueprint('blog', __name__)

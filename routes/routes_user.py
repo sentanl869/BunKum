@@ -13,7 +13,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from models.user import User
 from models.role import Role, Permission
 from models.comment import Comment
-from models.helper import send_email
+from models.helper import send_email, current_user_object
 from models.forms import (
     LoginForm,
     RegistrationForm,
@@ -25,7 +25,7 @@ from models.forms import (
     EditProfileForm,
     EditProfileAdminForm,
 )
-from routes import admin_required, current_user_object
+from routes import admin_required
 
 
 main = Blueprint('user', __name__, url_prefix='/user')

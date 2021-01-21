@@ -10,10 +10,10 @@ from flask import (
 )
 from flask_login import login_required, current_user
 
-from routes import current_user_object
 from models.forms import MessageForm
 from models.user import User
 from models.message import Message
+from models.helper import current_user_object
 
 
 main = Blueprint('message', __name__, url_prefix='/message')
