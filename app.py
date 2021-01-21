@@ -9,6 +9,7 @@ from routes.routes_user import main as user_route
 from routes.routes_comment import main as comment_route
 from routes.routes_admin import main as admin_route
 from routes.routes_message import main as message_route
+from routes.routes_public import main as public_route
 
 
 def register_routes(app: Flask) -> None:
@@ -17,6 +18,7 @@ def register_routes(app: Flask) -> None:
     app.register_blueprint(comment_route)
     app.register_blueprint(admin_route)
     app.register_blueprint(message_route)
+    app.register_blueprint(public_route)
 
 
 def configured_app(config_name: str) -> Flask:
