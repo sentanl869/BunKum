@@ -17,7 +17,7 @@ from flask_login import UserMixin
 from models import BaseModel
 from models.message import Message
 from models.role import Role, Permission
-from models.extensions import db, login_manager
+from models.extensions import db
 
 
 class User(BaseModel, db.Model, UserMixin):
@@ -208,8 +208,3 @@ class User(BaseModel, db.Model, UserMixin):
             receiver=self
         )
         return ms
-
-
-@login_manager.user_loader
-def load_user(user_id) -> User:
-    return User.one(id=int(user_id))

@@ -7,7 +7,13 @@ from flask_login import current_user
 
 from models.user import User
 from models.message import Message
+from models.extensions import login_manager
 from tasks import async_send_email
+
+
+@login_manager.user_loader
+def load_user(user_id) -> User:
+    return User.one(id=int(user_id))
 
 
 def send_email(to: str, subject: str, template: str, **kwargs) -> None:
