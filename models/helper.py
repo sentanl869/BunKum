@@ -48,3 +48,11 @@ def content_at_processing(content: str, blog) -> str:
         author = current_user_object(current_user.id)
         Message.auto_notification(content, author, receivers, blog)
     return content
+
+
+def get_size(file) -> int:
+    position = file.tell()
+    file.seek(0, 2)
+    size = file.tell()
+    file.seek(position)
+    return size

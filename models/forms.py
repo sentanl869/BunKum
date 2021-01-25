@@ -9,12 +9,15 @@ from wtforms import (
     SelectField,
     TextAreaField,
 )
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, Optional
+from wtforms.validators import (
+    DataRequired,Length, Email, Regexp, EqualTo, Optional
+)
 from wtforms import ValidationError
 
 from models.user import User
 from models.role import Role
 from models.category import Category
+from models.helper import get_size
 
 
 class LoginForm(FlaskForm):
@@ -128,10 +131,14 @@ class ChangeAvatarForm(FlaskForm):
         '更改头像：',
         validators=[
             FileRequired(),
-            FileAllowed(['jpg', 'jpeg', 'png'], '仅支持JPG、JPEG和PNG格式')
+            FileAllowed(['jpg', 'jpeg', 'png'], '仅支持 JPG、JPEG 和 PNG 格式')
         ]
     )
     submit = SubmitField('保存更改')
+
+    def validate_avatar(self, field):
+        if get_size(field.data) > (200 * 1024):
+            raise ValidationError('图片大小超过 200KB 限制，请重新上传')
 
 
 class EditProfileForm(FlaskForm):
