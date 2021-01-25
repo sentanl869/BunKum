@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -ex
 
-apt-get update
 apt-get install -y ufw
 ufw allow 22
 ufw allow 80

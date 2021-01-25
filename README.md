@@ -80,6 +80,10 @@
     db_host=example #MySQL连接地址
     ```
 2. 启动项目：  
+    更新软件源至最新：
+    ```shell
+    sudo apt update
+    ```
     进入部署脚本目录：
     ```shell
     cd script
