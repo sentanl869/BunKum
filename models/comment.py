@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Text, Integer, Boolean, ForeignKey
 
 from models import BaseModel
-from models.extensions import db, safe_markdown
+from models.extensions import db
+from models.helper import safe_markdown
 
 
 class Comment(BaseModel, db.Model):
