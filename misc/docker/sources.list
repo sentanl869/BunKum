@@ -1,0 +1,4 @@
+deb http://mirrors.bfsu.edu.cn/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.bfsu.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.bfsu.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+deb http://mirrors.bfsu.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
