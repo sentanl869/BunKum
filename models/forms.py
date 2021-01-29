@@ -17,7 +17,7 @@ from wtforms import ValidationError
 from models.user import User
 from models.role import Role
 from models.category import Category
-from models.helper import get_size
+from models.extensions import get_size
 
 
 class LoginForm(FlaskForm):

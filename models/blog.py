@@ -2,8 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
 from models import BaseModel
-from models.extensions import db
-from models.helper import markdown_covered
+from models.extensions import db, markdown_covered
 from models.user import User
 
 
