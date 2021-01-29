@@ -31,8 +31,9 @@ cp /var/www/BunKum/misc/blog.nginx /etc/nginx/sites-enabled/blog
 chmod -R o+rwx /var/www/BunKum
 
 cd /var/www/BunKum
-pip3 install gunicorn gevent psutil
-pip3 install -r requirements.txt
+python3 -m pip install -U pip
+python3 -m pip install gunicorn gevent psutil
+python3 -m pip install -r requirements.txt
 service mysql restart
 python3 reset_app.py
 export FLASK_APP=service.py
