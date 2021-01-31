@@ -1,7 +1,7 @@
 from flask import Flask
 from celery import Celery
 
-from config import config
+from config import config, CeleryConfig
 from models.extensions import mail
 
 
@@ -15,7 +15,7 @@ def configured_flask_app(config_name: str) -> Flask:
 def configured_celery() -> Celery:
     flask_app = configured_flask_app('celery')
     celery_app = Celery('tasks')
-    celery_app.conf.update(flask_app.config)
+    celery_app.config_from_object(CeleryConfig)
     task_base = celery_app.Task
 
     class ContextTask(task_base):
