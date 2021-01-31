@@ -116,10 +116,13 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+    DATABASE_HOST = os.environ.get('db_host')
+    if os.environ.get('DOCKER'):
+        DATABASE_HOST = os.environ.get('DOCKER_DB_HOST')
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
         os.environ.get('db_user'),
         os.environ.get('MYSQL_PASSWORD'),
-        os.environ.get('db_host'),
+        DATABASE_HOST,
         os.environ.get('db_name'),
     )
 
@@ -138,8 +141,14 @@ class CeleryAppConfig:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_USE_SSL = True
 
-    broker_url = os.environ.get('CELERY_BROKER_URL')
-    result_backend = os.environ.get('CELERY_RESULT_BACKEND')
+
+class CeleryConfig:
+    if os.environ.get('DOCKER'):
+        broker_url = os.environ.get('DOCKER_CELERY_BROKER_URL')
+        result_backend = os.environ.get('DOCKER_CELERY_RESULT_BACKEND')
+    else:
+        broker_url = os.environ.get('CELERY_DEFAULT_BROKER_URL')
+        result_backend = os.environ.get('CELERY_DEFAULT_RESULT_BACKEND')
 
 
 config = {
