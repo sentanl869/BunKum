@@ -14,10 +14,13 @@ def recreate_database() -> None:
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
     db_name = os.environ.get('db_name')
+    db_host = os.environ.get('db_host')
+    if os.environ.get('DOCKER'):
+        db_host = os.environ.get('DOCKER_DB_HOST')
     uri = 'mysql+pymysql://{}:{}@{}/?charset=utf8mb4'.format(
         os.environ.get('db_user'),
         os.environ.get('MYSQL_PASSWORD'),
-        os.environ.get('db_host'),
+        db_host,
     )
     engine = create_engine(uri, echo=True)
     with engine.connect() as c:
