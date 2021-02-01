@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
-until nc -z mysql 3306; do
+until nc -vz mysql 3306; do
   sleep 3
 done
 
