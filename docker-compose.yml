@@ -30,7 +30,7 @@ services:
             - ./data/supervisor/log:/var/log/supervisor
             - ./static:/var/www/BunKum/static
         ports:
-            - "5000:5000"
+            - "3000:3000"
     nginx:
         image: nginx:alpine
         container_name: nginx
