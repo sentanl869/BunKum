@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+
+    mysql:
+        image: mysql:5.7
+        container_name: mysql
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+        volumes:
+            - db_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+    redis:
+        image: redis:alpine
+        container_name: redis
+        restart: always
+        ports:
+            - "6379:6379"
+    bunkum:
+        build: .
+        container_name: bunkum
+        depends_on:
+            - mysql
+            - redis
+        restart: always
+        environment:
+            - DOCKER=True
+        volumes:
+            - ./data/supervisor/log:/var/log/supervisor
+            - ./static:/var/www/BunKum/static
+        ports:
+            - "5000:5000"
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        depends_on:
+            - bunkum
+        restart: always
+        volumes:
+            - ./data/nginx/log/:/var/log/nginx/
+            - ./static:/var/www/BunKum/static:ro
+            - ./docker/misc/blog.nginx:/etc/nginx/conf.d/default.conf:ro
+        ports:
+            - "80:80"
+
+volumes:
+    db_data:
