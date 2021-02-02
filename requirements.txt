@@ -1,6 +1,6 @@
 amqp==5.0.2
 billiard==3.6.3.0
-bleach==3.2.1
+bleach==3.3.0
 blinker==1.4
 celery==5.0.5
 click==7.1.2
