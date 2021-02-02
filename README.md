@@ -73,8 +73,8 @@
     MAIL_PASSWORD=example #系统邮件密码
     MAIL_SENDER=no-reply<example@example.com> #系统邮件发件人 注意：发件人邮件地址与账户地址应保持一致
     DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
-    CELERY_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
-    CELERY_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
+    CELERY_DEFAULT_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
+    CELERY_DEFAULT_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
     db_name=example #MySQL连接数据库名称
     db_user=example #MySQL连接用户名
     db_host=example #MySQL连接地址
@@ -123,8 +123,8 @@
     MAIL_PASSWORD=example #系统邮件密码
     MAIL_SENDER=no-reply<example@example.com> #系统邮件发件人 注意：发件人邮件地址与账户地址应保持一致
     DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
-    CELERY_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
-    CELERY_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
+    CELERY_DEFAULT_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
+    CELERY_DEFAULT_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
     db_name=example #MySQL连接数据库名称
     db_user=example #MySQL连接用户名
     db_host=example #MySQL连接地址
@@ -135,4 +135,56 @@
     vagrant up
     ```
     等待终端输出虚拟机 IP 后，打开浏览器，在地址栏中输入网址 `localhost` 查看项目运行效果。  
-    关于 `Vagrant` 的其他操作方法可以在官网 [查看](https://www.vagrantup.com/docs/cli) 。  
+    关于 `Vagrant` 的其他操作方法可以在官网 [查看](https://www.vagrantup.com/docs/cli) 。
+### Docker
+1. 安装 `Docker` 和 `Docker Compose`：  
+    进入 [Docker](https://www.docker.com/products/docker-desktop) 官网和 [Docker Compose](https://docs.docker.com/compose/install/) 页面，根据对应系统的相关文档，进行安装即可。
+2. 环境初始化：  
+    克隆仓库代码：  
+    ```shell
+    git clone https://github.com/sentanl869/BunKum.git
+    ```
+    进入项目目录：
+    ```shell
+    cd BunKum
+    ```
+    创建环境变量文件：  
+    ```shell
+    cp .env.example .env
+    ```
+    配置环境变量：
+    ```dotenv
+    MYSQL_PASSWORD=example #MySQL密码 注意：不要移动此项顺序，否则部署脚本会失效
+    SECRET_KEY=example #Flask密钥
+    ADMIN_ACCOUNT=example@example.com #设置博客管理员账户
+    ADMIN_PASSWORD=example #设置博客管理员密码
+    ADMIN_USERNAME=example #设置博客管理员用户名
+    MAIL_SERVER=smtp.example.com #系统邮件发送地址
+    MAIL_PORT=465 #系统邮件发送端口，默认使用SSL
+    MAIL_USERNAME=example@example.com #系统邮件账户
+    MAIL_PASSWORD=example #系统邮件密码
+    MAIL_SENDER=no-reply<example@example.com> #系统邮件发件人 注意：发件人邮件地址与账户地址应保持一致
+    DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
+    CELERY_DEFAULT_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
+    CELERY_DEFAULT_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
+    db_name=example #MySQL连接数据库名称
+    db_user=example #MySQL连接用户名
+    db_host=example #MySQL连接地址
+    DOCKER_DB_HOST=mysql #Docker环境内MySQL容器连接地址
+    DOCKER_CELERY_BROKER_URL=redis://redis:6379/db_num #Docker环境内Celery消息中间件地址，默认使用Redis
+    DOCKER_CELERY_RESULT_BACKEND=redis://redis:6379/db_num #Docker环境内Celery消息后台地址，默认使用Redis
+    ```
+3. 启动项目：  
+    在项目目录下执行：  
+    拉取所需镜像：  
+    ```shell
+    docker-compose pull
+    ```
+    执行初始化脚本：
+    ```shell
+    docker-compose run --rm bunkum ./docker/script/deploy.sh
+    ```
+    启动项目：
+    ```shell
+    docker-compose up -d 
+    ```
