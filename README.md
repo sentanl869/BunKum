@@ -92,7 +92,7 @@
     ```shell
     sudo ./deploy.sh
     ```
-    等待终端输出本机 IP 后，打开浏览器，在地址栏中输入网址 `localhost` 查看项目运行效果。
+    等待终端输出终端机 `IP` 后，在本机打开浏览器，在地址栏中输入终端机 `IP` 或者地址查看项目运行效果。
 ### Windows
 在 `Windows` 平台下使用 `Vagrant` 搭配 `VirtualBox` 进行一键部署。
 1. 安装 `Vagrant` 和 `VirtualBox`:  
@@ -134,11 +134,11 @@
     ```shell
     vagrant up
     ```
-    等待终端输出虚拟机 IP 后，打开浏览器，在地址栏中输入网址 `localhost` 查看项目运行效果。  
-    关于 `Vagrant` 的其他操作方法可以在官网 [查看](https://www.vagrantup.com/docs/cli) 。
+    等待终端输出虚拟机 `IP` 后，在本机打开浏览器，在地址栏中输入地址 `localhost` 查看项目运行效果。  
+    关于更多 `Vagrant` 的其他操作方法可以在 `Vagrant` 官网 [查看](https://www.vagrantup.com/docs/cli) 。
 ### Docker
 1. 安装 `Docker` 和 `Docker Compose`：  
-    进入 [Docker](https://www.docker.com/products/docker-desktop) 官网和 [Docker Compose](https://docs.docker.com/compose/install/) 页面，根据对应系统的相关文档，进行安装即可。
+    进入 [Docker](https://www.docker.com/products/docker-desktop) 官网和 [Docker Compose](https://docs.docker.com/compose/install/) 页面，根据对应系统的相关安装文档，进行安装即可。
 2. 环境初始化：  
     克隆仓库代码：  
     ```shell
@@ -165,11 +165,8 @@
     MAIL_PASSWORD=example #系统邮件密码
     MAIL_SENDER=no-reply<example@example.com> #系统邮件发件人 注意：发件人邮件地址与账户地址应保持一致
     DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
-    CELERY_DEFAULT_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
-    CELERY_DEFAULT_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
     db_name=example #MySQL连接数据库名称
     db_user=example #MySQL连接用户名
-    db_host=example #MySQL连接地址
     DOCKER_DB_HOST=mysql #Docker环境内MySQL容器连接地址
     DOCKER_CELERY_BROKER_URL=redis://redis:6379/db_num #Docker环境内Celery消息中间件地址，默认使用Redis
     DOCKER_CELERY_RESULT_BACKEND=redis://redis:6379/db_num #Docker环境内Celery消息后台地址，默认使用Redis
@@ -187,4 +184,6 @@
     启动项目：
     ```shell
     docker-compose up -d 
-    ```
+    ```  
+    等待终端输出显示容器全部启动后，在本机打开浏览器，在地址栏中输入终端机 `IP` 或者地址查看项目运行效果。  
+    关于更多 `Docker Compose` 的其他操作方法可以在 `Docker` 官网 [查看相关文档](https://docs.docker.com/compose/) 。
