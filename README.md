@@ -136,7 +136,14 @@
     ```
     等待终端输出虚拟机 `IP` 后，在本机打开浏览器，在地址栏中输入地址 `localhost` 查看项目运行效果。  
     关于更多 `Vagrant` 的其他操作方法可以在 `Vagrant` 官网 [查看](https://www.vagrantup.com/docs/cli) 。
-### Docker
+### Docker  
+在 `Docker` 环境下，定义四个容器：  
+- `Gunicorn` 、`Celery` 和 `Flask` 一个容器，其中 `Gunicorn` 和 `Celery` 进程由 `Supervisor` 管理，日志文件挂载在宿主机目录下，镜像基于 `Docker` 官方的 `ubuntu:18.04` 镜像构建。  
+- `MySQL` 单独一个容器，数据目录挂载到数据卷，镜像使用 `Docker` 官方的 `mysql:5.7` 镜像。  
+- `Redis` 单独一个容器，镜像使用 `Docker` 官方的 `redis:alpine` 镜像。
+- `Nginx` 单独一个容器，日志文件挂载在宿主机目录下，镜像使用 `Docker` 官方的 `nginx:alpine` 镜像。  
+ 
+各个容器之间的关联通过 `Docker Compose` 编排来实现。
 1. 安装 `Docker` 和 `Docker Compose`：  
     进入 [Docker](https://www.docker.com/products/docker-desktop) 官网和 [Docker Compose](https://docs.docker.com/compose/install/) 页面，根据对应系统的相关安装文档，进行安装即可。
 2. 环境初始化：  
