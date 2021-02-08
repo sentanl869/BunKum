@@ -75,9 +75,9 @@
     DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
     CELERY_DEFAULT_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
     CELERY_DEFAULT_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
-    db_name=example #MySQL连接数据库名称
-    db_user=example #MySQL连接用户名
-    db_host=example #MySQL连接地址
+    DB_NAME=example #MySQL连接数据库名称
+    DB_USER=example #MySQL连接用户名
+    DB_HOST=example #MySQL连接地址
     ```
 2. 启动项目：  
     更新软件源至最新：
@@ -125,9 +125,9 @@
     DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
     CELERY_DEFAULT_BROKER_URL=redis://example:port/db_num #Celery消息中间件地址，默认使用Redis
     CELERY_DEFAULT_RESULT_BACKEND=redis://example:port/db_num #Celery消息后台地址，默认使用Redis
-    db_name=example #MySQL连接数据库名称
-    db_user=example #MySQL连接用户名
-    db_host=example #MySQL连接地址
+    DB_NAME=example #MySQL连接数据库名称
+    DB_USER=example #MySQL连接用户名
+    DB_HOST=example #MySQL连接地址
     ```
 3. 启动项目：  
     在项目目录下执行：
@@ -172,8 +172,8 @@
     MAIL_PASSWORD=example #系统邮件密码
     MAIL_SENDER=no-reply<example@example.com> #系统邮件发件人 注意：发件人邮件地址与账户地址应保持一致
     DEFAULT_AVATAR_FILE_NAME=default_avatar.png #默认用户头像文件名称
-    db_name=example #MySQL连接数据库名称
-    db_user=example #MySQL连接用户名
+    DB_NAME=example #MySQL连接数据库名称
+    DB_USER=example #MySQL连接用户名
     DOCKER_DB_HOST=mysql #Docker环境内MySQL容器连接地址
     DOCKER_CELERY_BROKER_URL=redis://redis:6379/db_num #Docker环境内Celery消息中间件地址，默认使用Redis
     DOCKER_CELERY_RESULT_BACKEND=redis://redis:6379/db_num #Docker环境内Celery消息后台地址，默认使用Redis
