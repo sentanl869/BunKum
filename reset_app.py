@@ -13,12 +13,12 @@ def recreate_database() -> None:
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
-    db_name = os.environ.get('db_name')
-    db_host = os.environ.get('db_host')
+    db_name = os.environ.get('DB_NAME')
+    db_host = os.environ.get('DB_HOST')
     if os.environ.get('DOCKER'):
         db_host = os.environ.get('DOCKER_DB_HOST')
     uri = 'mysql+pymysql://{}:{}@{}/?charset=utf8mb4'.format(
-        os.environ.get('db_user'),
+        os.environ.get('DB_USER'),
         os.environ.get('MYSQL_PASSWORD'),
         db_host,
     )

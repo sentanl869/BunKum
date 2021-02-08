@@ -102,10 +102,10 @@ class DevelopmentConfig(Config):
     ENV = 'development'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
-        os.environ.get('db_user'),
+        os.environ.get('DB_USER'),
         os.environ.get('MYSQL_PASSWORD'),
-        os.environ.get('db_host'),
-        os.environ.get('db_name'),
+        os.environ.get('DB_HOST'),
+        os.environ.get('DB_NAME'),
     )
 
 
@@ -116,14 +116,14 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    DATABASE_HOST = os.environ.get('db_host')
+    DATABASE_HOST = os.environ.get('DB_HOST')
     if os.environ.get('DOCKER'):
         DATABASE_HOST = os.environ.get('DOCKER_DB_HOST')
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}/{}?charset=utf8mb4'.format(
-        os.environ.get('db_user'),
+        os.environ.get('DB_USER'),
         os.environ.get('MYSQL_PASSWORD'),
         DATABASE_HOST,
-        os.environ.get('db_name'),
+        os.environ.get('DB_NAME'),
     )
 
     @classmethod
