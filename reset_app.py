@@ -5,7 +5,7 @@ from flask import current_app
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-from app import configured_app
+from service import app
 from models.extensions import db
 
 
@@ -47,7 +47,6 @@ def reset_avatar() -> None:
 
 
 if __name__ == '__main__':
-    reset_app = configured_app('production')
-    with reset_app.app_context():
+    with app.app_context():
         recreate_database()
         reset_avatar()
