@@ -9,3 +9,4 @@ __pycache__
 *.log
 static/avatars
 data
+.python-version
