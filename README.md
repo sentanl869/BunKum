@@ -7,7 +7,10 @@
 ![redis-depend](https://badgen.net/badge/Redis/4.0.9+/cyan)
 ![nginx-depend](https://badgen.net/badge/Nginx/1.14.0+/purple)
 
-一个使用 `Python` 且基于 `Flask` Web 框架开发的 `MVC` 架构的个人博客系统。
+一个使用 `Python` 且基于 `Flask` Web 框架开发的 `MVC` 架构的个人博客系统。  
+项目测试地址：[122.51.14.203](http://122.51.14.203)  
+测试账号：bunkum@example.com  
+测试密码：password
 ***
 ## 功能介绍
 - 用户系统
@@ -87,6 +90,11 @@
     进入部署脚本目录：
     ```shell
     cd script
+    ```
+    赋予部署脚本执行权限：
+    ```shell
+    sudo chmod u+x deploy.sh mirror.sh
+    sudo chmod o+x deploy.sh mirror.sh
     ```
     执行一键部署脚本：
     ```shell
