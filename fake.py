@@ -11,6 +11,7 @@ from models.blog import Blog
 from models.comment import Comment
 from models.category import Category
 from models.message import Message
+from service import app
 
 
 def fake_users(count=100) -> None:
@@ -116,3 +117,8 @@ def fake_all() -> None:
     fake_messages()
     end_time = time()
     print(f'Total cost {(end_time - start_time)} seconds.')
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        fake_all()
