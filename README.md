@@ -10,7 +10,7 @@
 一个使用 `Python` 且基于 `Flask` Web 框架开发的 `MVC` 架构的个人博客系统。  
 项目测试地址：[122.51.14.203](http://122.51.14.203)  
 测试账号：bunkum@example.com  
-测试密码：password
+测试账号密码：password
 ***
 ## 功能介绍
 - 用户系统
