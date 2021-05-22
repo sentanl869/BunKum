@@ -184,8 +184,8 @@ def profile(username: str):
         abort(404)
     page = request.args.get('page', 1, type=int)
     if page == -1:
-        page = (user.comments.count() - 1) // \
-               current_app.config['COMMENTS_PER_PAGE'] + 1
+        page = ((user.comments.count() - 1) //
+                current_app.config['COMMENTS_PER_PAGE'] + 1)
     pagination = user.comments_page(
         page,
         current_app.config['COMMENTS_PER_PAGE'],
@@ -205,8 +205,8 @@ def profile(username: str):
 @main.route('/change_avatar/<username>', methods=['GET', 'POST'])
 @login_required
 def change_avatar(username: str) -> bytes:
-    if current_user.username != username \
-            and not current_user.can(Permission.ADMIN):
+    if (current_user.username != username
+            and not current_user.can(Permission.ADMIN)):
         abort(403)
     user = User.one(username=username)
     if user is None:

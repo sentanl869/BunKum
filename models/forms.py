@@ -10,7 +10,7 @@ from wtforms import (
     TextAreaField,
 )
 from wtforms.validators import (
-    DataRequired,Length, Email, Regexp, EqualTo, Optional
+    DataRequired, Length, Email, Regexp, EqualTo, Optional
 )
 from wtforms import ValidationError
 
@@ -161,8 +161,8 @@ class EditProfileForm(FlaskForm):
         self.user = user
 
     def validate_username(self, field):
-        if field.data != self.user.username \
-                and User.one(username=field.data):
+        if (field.data != self.user.username
+                and User.one(username=field.data)):
             raise ValidationError('该用户名已被使用')
 
 
@@ -199,13 +199,13 @@ class EditProfileAdminForm(FlaskForm):
         self.user = user
 
     def validate_email(self, field):
-        if field.data != self.user.email \
-                and User.one(email=field.data):
+        if (field.data != self.user.email
+                and User.one(email=field.data)):
             raise ValidationError('该邮箱已经注册')
 
     def validate_username(self, field):
-        if field.data != self.user.username \
-                and User.one(username=field.data):
+        if (field.data != self.user.username
+                and User.one(username=field.data)):
             raise ValidationError('该用户名已被使用')
 
 
@@ -248,8 +248,8 @@ class EditCategoryForm(FlaskForm):
         self.category = category
 
     def validate_name(self, field):
-        if field.data != self.category.name \
-                and Category.one(name=field.data):
+        if (field.data != self.category.name
+                and Category.one(name=field.data)):
             raise ValidationError('该分类标签已经存在')
 
 

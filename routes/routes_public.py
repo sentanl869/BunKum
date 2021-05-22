@@ -25,10 +25,10 @@ def after_request(response):
 def before_request() -> bytes:
     if current_user.is_authenticated:
         current_user.ping()
-        if not current_user.confirmed \
-                and request.endpoint \
-                and request.blueprint != 'user' \
-                and request.endpoint != 'static':
+        if (not current_user.confirmed
+                and request.endpoint
+                and request.blueprint != 'user'
+                and request.endpoint != 'static'):
             return redirect(url_for('user.unconfirmed'))
 
 

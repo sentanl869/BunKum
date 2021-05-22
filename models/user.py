@@ -96,9 +96,9 @@ class User(BaseModel, db.Model, UserMixin):
             current_app.config['AVATARS_ABSOLUTE_PATH'],
             filename
         )
-        if os.path.exists(avatar_path) \
-                and filename != \
-                current_app.config['DEFAULT_AVATAR_FILE_NAME']:
+        if (os.path.exists(avatar_path)
+                and filename !=
+                current_app.config['DEFAULT_AVATAR_FILE_NAME']):
             os.remove(avatar_path)
 
     def avatar_save(self, avatar_file) -> str:

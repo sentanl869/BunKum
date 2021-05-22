@@ -108,8 +108,8 @@ def detail(_id: int) -> bytes:
         return redirect(url_for('blog.detail', _id=_id))
     page = request.args.get('page', 1, type=int)
     if page == -1:
-        page = (blog.comments.count() - 1) // \
-                current_app.config['COMMENTS_PER_PAGE'] + 1
+        page = ((blog.comments.count() - 1) //
+                current_app.config['COMMENTS_PER_PAGE'] + 1)
     pagination = blog.comments_page(
         page,
         current_app.config['COMMENTS_PER_PAGE'],
