@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import os
 from time import time
 from random import randint
