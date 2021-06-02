@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_pagedown import PageDown
 from flask_wtf import CSRFProtect
+from flask_migrate import Migrate
 from markdown import Markdown
 from bleach import linkify, clean
 
@@ -23,6 +24,7 @@ moment = Moment()
 mail = Mail()
 pagedown = PageDown()
 csrf = CSRFProtect()
+migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'user.login'
 login_manager.login_message = '请进行登录以继续访问该页面。'

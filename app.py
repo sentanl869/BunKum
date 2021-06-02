@@ -2,7 +2,7 @@ from flask import Flask
 
 from config import config
 from models.extensions import (
-    db, login_manager, bootstrap, moment, pagedown, csrf
+    db, login_manager, bootstrap, moment, pagedown, csrf, migrate
 )
 from routes.routes_blog import main as blog_route
 from routes.routes_user import main as user_route
@@ -30,6 +30,7 @@ def configured_app(config_name: str) -> Flask:
     moment.init_app(app)
     pagedown.init_app(app)
     csrf.init_app(app)
+    migrate.init_app(app, db)
     register_routes(app)
     config[config_name].init_app(app)
     return app

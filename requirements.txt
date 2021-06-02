@@ -1,3 +1,4 @@
+alembic==1.6.5
 amqp==5.0.6
 billiard==3.6.4.0
 bleach==3.3.0
@@ -15,6 +16,7 @@ Flask==1.1.2
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
+Flask-Migrate==3.0.1
 Flask-Moment==0.11.0
 Flask-PageDown==0.3.0
 Flask-SQLAlchemy==2.5.1
@@ -25,6 +27,7 @@ importlib-metadata==4.0.1
 itsdangerous==1.1.0
 Jinja2==2.11.3
 kombu==5.0.2
+Mako==1.1.4
 Markdown==3.3.4
 MarkupSafe==1.1.1
 packaging==20.9
@@ -33,6 +36,7 @@ PyMySQL==1.0.2
 pyparsing==2.4.7
 python-dateutil==2.8.1
 python-dotenv==0.17.1
+python-editor==1.0.4
 pytz==2021.1
 redis==3.5.3
 six==1.16.0
