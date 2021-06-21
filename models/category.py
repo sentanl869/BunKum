@@ -12,6 +12,9 @@ class Category(BaseModel, db.Model):
     default = Column(Boolean, default=False, index=True)
     posts = relationship('Blog', backref='category', lazy='dynamic')
 
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+
     @staticmethod
     def insert_default_category() -> None:
         Category.new(
