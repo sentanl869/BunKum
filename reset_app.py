@@ -11,6 +11,15 @@ from models.extensions import db
 
 
 def recreate_database() -> None:
+    """ Recreate the database.
+
+    Get the database configuration from the dotenv file and generate the database uri.
+    Drop the original database with the same name and then recreate the database.
+
+    Returns:
+        None
+    """
+
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
@@ -32,6 +41,17 @@ def recreate_database() -> None:
 
 
 def reset_avatar() -> None:
+    """ Reset all user avatars.
+
+    Get the path of the avatars from the dotenv file.
+    Remove the exist avatar folder and remake the folder.
+    Copy the default avatar file from the source file path.
+
+    Returns:
+         None
+    """
+
+    # The static folder must at the root path just same as this script
     static_folder = os.path.join(
         os.path.abspath(os.path.dirname(__file__)),
         'static'
@@ -48,6 +68,7 @@ def reset_avatar() -> None:
 
 
 if __name__ == '__main__':
+    # This two function must run under the app context
     with app.app_context():
         recreate_database()
         reset_avatar()
