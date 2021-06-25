@@ -10,6 +10,20 @@ from service import app
 from models.extensions import db
 
 
+def init_environ() -> None:
+    """ Initialization the environ.
+
+    Get the dotenv file path to load it.
+
+    Returns:
+         None
+    """
+
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path)
+
+
 def recreate_database() -> None:
     """ Recreate the database.
 
@@ -20,9 +34,6 @@ def recreate_database() -> None:
         None
     """
 
-    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-    if os.path.exists(dotenv_path):
-        load_dotenv(dotenv_path)
     db_name = os.environ.get('DB_NAME')
     db_host = os.environ.get('DB_HOST')
     if os.environ.get('DOCKER'):
@@ -68,6 +79,7 @@ def reset_avatar() -> None:
 
 
 if __name__ == '__main__':
+    init_environ()
     # This two function must run under the app context
     with app.app_context():
         recreate_database()
