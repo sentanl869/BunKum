@@ -16,7 +16,7 @@ def init_environ() -> None:
     Get the dotenv file path to load it.
 
     Returns:
-         None
+        None
     """
 
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -59,7 +59,7 @@ def reset_avatar() -> None:
     Copy the default avatar file from the source file path.
 
     Returns:
-         None
+        None
     """
 
     # The static folder must at the root path just same as this script
