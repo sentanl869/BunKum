@@ -10,7 +10,7 @@ screenshot
 README.md
 Vagrantfile
 LICENSE
-docker-compose.yml
+docker-compose.yaml
 data
 static/avatars
 misc
